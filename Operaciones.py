@@ -18,13 +18,37 @@ def openExtra():
     else:
         texto = archivo.read()
         archivo.close()
-        print('\n"Lectura exitosa"')
+        print('\n"Lectura exitosa"\n')
         return texto
 
 #Obtiene la cadena de texto
 def purificacionExtra():
+    Entrada = False
+
     text = openExtra()
-    print(text)
+    Etiquetas = ""
+    EntradaEtiqueta = ""
+    for txt in text:
+        #print(txt)
+        if txt != " " and Entrada == False:
+            
+            if txt == "=":
+                Entrada = True
+            else:
+                Etiquetas+=txt
+
+
+        if (txt != " " and Entrada == True) or (txt == "\n") :
+            if txt != "=":
+                if txt == ";":
+                    Entrada = False
+                else:
+                    EntradaEtiqueta+=txt
+                
+           
+    print(Etiquetas)
+    print('\n\n\nOtro')
+    print(EntradaEtiqueta)
 
 #Crea la tabla de tokens
 def TablaTokens():
@@ -44,8 +68,8 @@ def TablaTokens():
         #print(aux)
 
     #print(listaTokens)
-    print(listaTokens[0])
-    print(listaTokens[0][0])
+    #print(listaTokens[0])
+    #print(listaTokens[0][0])
 
 
 
