@@ -1,7 +1,7 @@
 from tkinter import filedialog, Tk
 
-AllPatrones = []
-AllTokens = []
+
+PalabrasReservadas = []
 
 def openExtra():
     Tk().withdraw()
@@ -20,66 +20,142 @@ def openExtra():
         texto = archivo.read()
         archivo.close()
         print('\n"Lectura exitosa"\n')
+        texto += "~"
         return texto
 
 #Obtiene la cadena de texto
 def purificacionExtra():
-    Entrada = False
+    estado = 0
+    txtTemp = ""
+    columna = 1
+    fila = 1
+    opcion = True
 
     text = openExtra()
-    Etiquetas = ""
-    EntradaEtiqueta = ""
+    #print(text)
+
     for txt in text:
-        #print(txt)
-        if txt != " " and Entrada == False and txt != "\n" and txt != "@":
-            
-            if txt == "=" :
-                Entrada = True
-   
-
-                for Tokens in AllTokens:
-                    if Etiquetas.__eq__(Tokens): 
-                        print(Etiquetas)
-                        Etiquetas = ""
-                        break
+        opcion = True
+        while opcion != False:
+            if estado == 0:
                 
-            else:
-                Etiquetas+=txt
+                if isLetra(txt):
+                    txtTemp += txt
+                    estado =1
+                    opcion = False
 
+                elif isNumero(txt):
+                    txtTemp += txt
+                    estado =4
 
-        if (txt != " " and Entrada == True) or (txt == "\n") :
-            if txt != "=" :
-                if txt == ";":
-                    Entrada = False
+                elif ord(txt) == 35: # #
+                    txtTemp += txt
+                    estado = 5
+
+                elif isSimbolo(txt): 
+                    txtTemp += txt
+                    estado = 2
+
+                elif ord(txt) == 34: # "
+                    txtTemp += txt
+                    estado = 3
+                    opcion = False
+
+                elif ord(txt) == 64: # @
+                    txtTemp += txt
+                    estado = 6
+
                 else:
-                    EntradaEtiqueta+=txt
+
+                    if ord(txt) == 32 or ord(txt) == 10 or ord(txt) == 9 or txt == '~':
+                        opcion = False
+                        pass
+                    else: #@
+                        print("Error Lexico, se detecto " + txt + " en S0 F,C")
+
+            elif estado == 1:
+                opcion = False
+                if (isLetra(txt)):
+                    txtTemp += txt
+                    estado = 1
                 
-    print('\n\n\nOtro')
-    #print(Etiquetas)
-    print('\n\n\nOtro')
-    #print(EntradaEtiqueta)
+                elif (isNumero(txt)):
+                    txtTemp +=   txt
+                    estado = 1
+
+                else:
+                    print("Se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                    txtTemp = ""
+                    estado = 0
+                    opcion = True
+
+            elif estado == 2:
+                print("Se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna ))
+                txtTemp = ""
+                estado = 0
+                opcion = False
+
+            elif estado == 3:
+                
+                if ord(txt) != 34:
+                    txtTemp += txt
+                    opcion = False
+                else:
+                    txtTemp += txt
+                    print("Se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                    txtTemp = ""
+                    estado = 0
+                    opcion = False
+              
+
+
+        # Control de filas y columnas
+        # Salto de Linea
+        if (ord(txt) == 10):
+            columna = 0
+            fila += 1
+            continue
+        # Tab Horizontal
+        elif (ord(txt) == 9):
+            columna += 4
+            continue
+        # Espacio
+        elif (ord(txt) == 32):
+            columna += 1
+            continue
+        
+        columna += 1
+
+    print("///////////////////")
+    #print(txtTemp)
+
+def isLetra(txt):
+    if((ord(txt) >= 65 and ord(txt) <= 90) or (ord(txt) >= 97 and ord(txt) <= 122) or ord(txt) == 164 or ord(txt) == 165):
+        return True
+    else:
+        return False
+
+def isSimbolo(txt):
+    
+    if(ord(txt) == 61 or ord(txt) == 59 or ord(txt) == 123 or ord(txt) == 125  or ord(txt) == 91 or ord(txt) == 93):
+        return True
+    else:
+        return False
+
+def isNumero(txt):
+    if ((ord(txt) >= 48 and ord(txt) <= 57)):
+        return True
+    else:
+        return False
+
 
 #Crea la tabla de tokens
 def TablaTokens():
-    global AllPatrones
-    AllPatrones = ["(T)(I)(T)(U)(L)(O)","(A)(N)(C)(H)(O)","(A)(L)(T)(O)","(F)(I)(L)(A)(S)","(C)(O)(L)(U)(M)(N)(A)(S)","(C)(E)(L)(D)(A)(S)","(F)(I)(L)(T)(R)(O)(S)","L={a-z,A-Z} L+","D={0-9} D+","((T)(R)(U)(E))|((F)(A)(L)(S)(E))","#DDDDDDD","(M)(I)(R)(R)(O)(R)(X)|(M)(I)(R)(R)(O)(R)(Y)|(D)(O)(U)(B)(L)(E)(M)(I)(R)(R)(O)(R)"]
-    global AllTokens
-    AllTokens= ["TITULO","ANCHO","ALTO","FILAS","COLUMNAS","CELDAS","FILTROS","Titulo","Numero","Boolean","Color","Filtro"]
-    listaTokens= []
     
-
-    for i in range (0,12):
-        aux = []
-        #print(AllTokens[i])
-        #print(AllPatrones[i])
-        aux.append(AllTokens[i])
-        aux.append(AllPatrones[i])
-        listaTokens.append(aux)
-        #print(aux)
-
-    #print(listaTokens)
-    #print(listaTokens[0])
-    #print(listaTokens[0][0])
+    global PalabrasReservadas
+    PalabrasReservadas = ["TITULO","ANCHO","ALTO","FILAS","COLUMNAS","CELDAS","FILTROS","MIRRORX","MIRRORY","DOUBLEMIRROR","TRUE","FALSE"]
+    #print(PalabrasReservadas)
+    
 
 
 
