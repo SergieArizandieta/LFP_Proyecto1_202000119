@@ -112,10 +112,7 @@ def purificacionExtra():
                     if verificacion == True:
                         print("Se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
                         TokensTemp = []
-                        
-                        
                         acces = 0
-
                         for reservadas in PalabrasReservadas:
                             if txtTemp.__eq__(reservadas):
                                 TokensTemp.append("RESERVADA")
@@ -421,6 +418,7 @@ def purificacionExtra():
 
     print("///////////////////")
     print(Tokens)
+    print("///////////////////")
     #print(Tokens[0])
     #print(Tokens[0][1])
     #print(Errores)
@@ -447,7 +445,69 @@ def isNumero(txt):
     else:
         return False
 
+
+def ConfromacionEntrada():
+    for caracter in Tokens:
+        
+        #print(caracter[0])
+        if caracter[0] == "RESERVADA":
+     
+            for reservadas in PalabrasReservadas:
+                        if caracter[1].__eq__("TITULO"):
+                            #print(caracter[1])
+                            Titulo = caracter[1]
+                            break
+                        elif caracter[1].__eq__("ANCHO"):
+                            #print(caracter[1])
+                            Ancho = caracter[1]
+                            break
+                        elif caracter[1].__eq__("ALTO"):
+                            #print(caracter[1])
+                            Alto = caracter[1]
+                            break
+                        elif caracter[1].__eq__("FILAS"):
+                            #print(caracter[1])
+                            Filas = caracter[1]
+                            break
+                        elif caracter[1].__eq__("COLUMNAS"):
+                            #print(caracter[1])
+                            Columnas = caracter[1]
+                            break
+                        elif caracter[1].__eq__("CELDAS"):
+                            #print(caracter[1])
+                            Celdas = caracter[1]
+                            break
+                        elif caracter[1].__eq__("FILTROS"):
+                            print(caracter[1])
+                            Filtros = caracter[1]
+                            break
+                        elif caracter[1].__eq__("MIRRORX"):
+                            print(caracter[1])
+                            Mirrorx = caracter[1]
+                            break
+                        elif caracter[1].__eq__("MIRRORY"):
+                            print(caracter[1])
+                            Mirrory = caracter[1]
+                            break
+                        elif caracter[1].__eq__("DOUBLEMIRROR"):
+                            print(caracter[1])
+                            DoubleMirror = caracter[1]
+                            break
+                        elif caracter[1].__eq__("TRUE"):
+                            print(caracter[1])
+                            verdadero = caracter[1]
+                            break
+                        elif caracter[1].__eq__("FALSE"):
+                            print(caracter[1])
+                            falso = caracter[1]
+                            break
+
+    print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas,"Celdas:", Celdas)
+        
+
+
 def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas):
+
     if Asignar == True:
         e1 = ListaImagenes(Titulo,Ancho,Alto,Filas,Columnas,Celdas)
         
