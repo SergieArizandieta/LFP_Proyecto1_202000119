@@ -3,6 +3,9 @@ from tkinter import filedialog, Tk
 
 PalabrasReservadas = []
 
+Tokens = []
+Errores = []
+
 def openExtra():
     Tk().withdraw()
     archivo = filedialog.askopenfile(
@@ -25,6 +28,9 @@ def openExtra():
 
 #Obtiene la cadena de texto
 def purificacionExtra():
+    verificacion = True
+    errortipo=""
+
     estado = 0
     txtTemp = ""
     columna = 1
@@ -38,7 +44,7 @@ def purificacionExtra():
         opcion = True
         while opcion != False:
             if estado == 0:
-                
+                verificacion = True
                 if isLetra(txt):
                     txtTemp += txt
                     estado =1
@@ -66,14 +72,25 @@ def purificacionExtra():
                 elif ord(txt) == 64: # @
                     txtTemp += txt
                     estado = 6
+                    opcion = False
 
                 else:
 
                     if ord(txt) == 32 or ord(txt) == 10 or ord(txt) == 9 or txt == '~':
+                        
                         opcion = False
                         pass
                     else: 
                         print("Error Lexico, se detecto " + txt + " en S0  F: " + str(fila) + ", C: " + str(columna))
+                        errortipo= 'Caracter inesperado, esperaba L|D|#|S|"|@' 
+                        errortemp =[]
+                        errortemp.append(txt)
+                        errortemp.append(errortipo)
+                        errortemp.append(fila)
+                        errortemp.append(columna)
+                        Errores.append(errortemp)
+                        
+                        opcion = False
 
             elif estado == 1:
                 opcion = False
@@ -90,21 +107,86 @@ def purificacionExtra():
                     estado = 1
 
                 else:
-                    print("Se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                    if verificacion == True:
+                        print("Se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                        TokensTemp = []
+                        
+                        
+                        acces = 0
+
+                        for reservadas in PalabrasReservadas:
+                            if txtTemp.__eq__(reservadas):
+                                TokensTemp.append("RESERVADA")
+                                acces =1
+                                break
+
+                        if acces == 0:
+                            TokensTemp.append("IDENTIFICADOR")
+                        else:
+                            acces = 0
+
+                        TokensTemp.append(txtTemp)
+                        TokensTemp.append(fila)
+                        TokensTemp.append(str(columna - len(txtTemp)))
+
+                        Tokens.append(TokensTemp)
+
+                        txtTemp = ""
+                        estado = 0
+                        opcion = True
+                    else:
+                        print("No se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                        txtTemp = ""
+                        estado = 0
+                        opcion = True
+
+
+            elif estado == 2:
+                if verificacion == True:
+                    if len(txtTemp)>1:
+                        print("Se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                        TokensTemp = []
+
+                        cantidad = len(txtTemp)
+                        if txtTemp[0] == '"' and txtTemp[cantidad-1] == '"':
+                            TokensTemp.append("TITULO")
+                        elif txtTemp[0] == '#':
+                            TokensTemp.append("COLOR")
+                        else:
+                            TokensTemp.append("IDENTIFICADOR")
+                            
+                        TokensTemp.append(txtTemp)
+                        TokensTemp.append(fila)
+                        TokensTemp.append(str(columna - len(txtTemp)))
+
+                        Tokens.append(TokensTemp)
+
+                        if(txtTemp == "@@@@"):
+                            opcion = False
+                        else:
+                            opcion = True
+                            
+                  
+                    else:
+                        print("Se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna ))
+                        TokensTemp = []
+                        TokensTemp.append("SIMBOLO")
+                        TokensTemp.append(txtTemp)
+                        TokensTemp.append(fila)
+                        TokensTemp.append(str(columna))
+
+                        Tokens.append(TokensTemp)
+
+                        opcion = False
+                else:
+                    if len(txtTemp)>1:
+                        print("No se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                    else:
+                        print("No se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna ))
                     txtTemp = ""
                     estado = 0
                     opcion = True
 
-            elif estado == 2:
-                if len(txtTemp)>1:
-                    print("Se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
-                    if(txtTemp == "@@@@"):
-                        opcion = False
-                    else:
-                        opcion = True
-                else:
-                    print("Se reconocio en S2: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna ))
-                    opcion = False
                 txtTemp = ""
                 estado = 0
             
@@ -126,10 +208,24 @@ def purificacionExtra():
                     estado = 4
 
                 else:
-                    print("Se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
-                    txtTemp = ""
-                    estado = 0
-                    opcion = True
+                    if verificacion == True:
+                        print("Se reconocio en S4: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                        TokensTemp = []
+                        TokensTemp.append("DIGITO")
+                        TokensTemp.append(txtTemp)
+                        TokensTemp.append(fila)
+                        TokensTemp.append(str(columna - len(txtTemp)))
+
+                        Tokens.append(TokensTemp)
+
+                        txtTemp = ""
+                        estado = 0
+                        opcion = True
+                    else:
+                        print("No se reconocio en S4: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
+                        txtTemp = ""
+                        estado = 0
+                        opcion = True
 
             elif estado == 5:
                 opcion = False
@@ -137,6 +233,18 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 7
+                else:
+                    errortipo= 'Caracter inesperado, esperaba D'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 7
+                    print("Error Lexico, se detecto " + txt + " en S7  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
 
             elif estado == 7:
                 opcion = False
@@ -144,6 +252,19 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 9
+                else:
+                    errortipo= 'Caracter inesperado, esperaba D'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 9
+                    print("Error Lexico, se detecto " + txt + " en S7  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
+                        
             
             elif estado == 9:
                 opcion = False
@@ -151,6 +272,18 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 11
+                else:
+                    errortipo= 'Caracter inesperado, esperaba D' 
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 11
+                    print("Error Lexico, se detecto " + txt + " en S9  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
 
             elif estado == 11:
                 opcion = False
@@ -158,6 +291,18 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 12
+                else:
+                    errortipo= 'Caracter inesperado, esperaba D'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 12
+                    print("Error Lexico, se detecto " + txt + " en S11  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
             
             elif estado == 12:
                 opcion = False
@@ -165,6 +310,18 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 13
+                else:
+                    errortipo= 'Caracter inesperado, esperaba D'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 13
+                    print("Error Lexico, se detecto " + txt + " en S12  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
 
             elif estado == 13:
                 opcion = False
@@ -172,6 +329,18 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 2
+                else:
+                    errortipo= 'Caracter inesperado, esperaba D'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 2
+                    print("Error Lexico, se detecto " + txt + " en S13  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
 
             elif estado == 6:
                 opcion = False
@@ -179,6 +348,18 @@ def purificacionExtra():
                 if (ord(txt) == 64):
                     txtTemp += txt
                     estado = 8
+                else:
+                    errortipo = 'Caracter inesperado, esperaba @'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 8
+                    print("Error Lexico, se detecto " + txt + " en S6  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
 
             elif estado == 8:
                 opcion = False
@@ -186,6 +367,18 @@ def purificacionExtra():
                 if (ord(txt) == 64):
                     txtTemp += txt
                     estado = 10
+                else:
+                    errortipo= 'Caracter inesperado, esperaba @'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 10
+                    print("Error Lexico, se detecto " + txt + " en S8  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
             
             elif estado == 10:
                 opcion = False
@@ -193,6 +386,18 @@ def purificacionExtra():
                 if (ord(txt) == 64):
                     txtTemp += txt
                     estado = 2
+                else:
+                    errortipo = 'Caracter inesperado, esperaba @'
+                    verificacion = False
+                    txtTemp += txt
+                    estado = 2
+                    print("Error Lexico, se detecto " + txt + " en S10  F: " + str(fila) + ", C: " + str(columna))
+                    errortemp =[]
+                    errortemp.append(txt)
+                    errortemp.append(errortipo)
+                    errortemp.append(fila)
+                    errortemp.append(columna)
+                    Errores.append(errortemp)
                 
 
         # Control de filas y columnas
@@ -213,6 +418,12 @@ def purificacionExtra():
         columna += 1
 
     print("///////////////////")
+    print(Tokens)
+    #print(Tokens[0])
+    #print(Tokens[0][1])
+    #print(Errores)
+    
+
     #print(txtTemp)
 
 def isLetra(txt):
@@ -233,7 +444,6 @@ def isNumero(txt):
         return True
     else:
         return False
-
 
 #Crea la tabla de tokens
 def TablaTokens():
