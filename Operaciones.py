@@ -1,10 +1,12 @@
 from tkinter import filedialog, Tk
+from ListaSimple import *
 
+lista_e = lista_enlazada()
 
 PalabrasReservadas = []
-
 Tokens = []
 Errores = []
+Asignar = True
 
 def openExtra():
     Tk().withdraw()
@@ -444,6 +446,15 @@ def isNumero(txt):
         return True
     else:
         return False
+
+def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas):
+    if Asignar == True:
+        e1 = ListaImagenes(Titulo,Ancho,Alto,Filas,Columnas,Celdas)
+        
+        lista_e.insertar(e1)
+        lista_e.recorrer()
+    else:
+        pass
 
 #Crea la tabla de tokens
 def TablaTokens():
