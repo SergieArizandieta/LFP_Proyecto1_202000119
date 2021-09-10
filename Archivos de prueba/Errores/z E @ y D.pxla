@@ -11,7 +11,8 @@
             [3,5,TRUE,#0000E0],
             [3,6,TRUE,#00000F],
             [3,7,TRUE,#ABCDEF],
-            [4,1,FALSE,#000000]
+            [4,1,FALSE,#111111],
+            [4,1,FALSE,#00000],
     };
     FILTROS = MIRRORX;
 

@@ -1,4 +1,5 @@
 from tkinter import filedialog, Tk
+from tkinter.constants import FALSE
 from ListaSimple import *
 
 lista_e = lista_enlazada()
@@ -109,6 +110,8 @@ def purificacionExtra():
                     estado = 1
 
                 else:
+                  
+
                     if verificacion == True:
                         print("Se reconocio en S1: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
                         TokensTemp = []
@@ -207,6 +210,12 @@ def purificacionExtra():
                     estado = 4
 
                 else:
+
+                    
+
+
+
+
                     if verificacion == True:
                         print("Se reconocio en S4: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
                         TokensTemp = []
@@ -419,9 +428,11 @@ def purificacionExtra():
     print("///////////////////")
     print(Tokens)
     print("///////////////////")
+    print(Errores)
+    print("///////////////////")
     #print(Tokens[0])
     #print(Tokens[0][1])
-    #print(Errores)
+    
     
 
     #print(txtTemp)
@@ -445,66 +456,321 @@ def isNumero(txt):
     else:
         return False
 
+def ConfromacionEntrada(): 
+    contarFiltros1= 0
+    contarFiltros2= 0
+    contarFiltros3= 0
 
-def ConfromacionEntrada():
-    for caracter in Tokens:
-        
+    ValidacionPermante = True
+
+    ValidacionOtro = False
+
+
+    ValidacionUltimo = False
+    ValidarUltimoFiltro = False
+    ValidacionCerrarCeldas = False
+
+    TextTemp = ""
+    ValidacionPalbraReservada = False
+    ValidacionData = False
+    ValidarCerrarData = False
+    ValidacionAsignacion = True
+
+    ValidacionCeldas = False
+    CeldasContador= 0
+    ValidacionFinalizacionCeldas = False
+    ValidarFiltros = False
+
+    ListaColores= []
+ 
+
+    for caracter in Tokens:    
         #print(caracter[0])
-        if caracter[0] == "RESERVADA":
+    
+        #Buscar si es palabra reservada
+        if caracter[0] == "RESERVADA" and ValidacionPalbraReservada == False:
      
-            for reservadas in PalabrasReservadas:
-                        if caracter[1].__eq__("TITULO"):
-                            #print(caracter[1])
-                            Titulo = caracter[1]
-                            break
-                        elif caracter[1].__eq__("ANCHO"):
-                            #print(caracter[1])
-                            Ancho = caracter[1]
-                            break
-                        elif caracter[1].__eq__("ALTO"):
-                            #print(caracter[1])
-                            Alto = caracter[1]
-                            break
-                        elif caracter[1].__eq__("FILAS"):
-                            #print(caracter[1])
-                            Filas = caracter[1]
-                            break
-                        elif caracter[1].__eq__("COLUMNAS"):
-                            #print(caracter[1])
-                            Columnas = caracter[1]
-                            break
-                        elif caracter[1].__eq__("CELDAS"):
-                            #print(caracter[1])
-                            Celdas = caracter[1]
-                            break
-                        elif caracter[1].__eq__("FILTROS"):
-                            print(caracter[1])
-                            Filtros = caracter[1]
-                            break
-                        elif caracter[1].__eq__("MIRRORX"):
-                            print(caracter[1])
-                            Mirrorx = caracter[1]
-                            break
-                        elif caracter[1].__eq__("MIRRORY"):
-                            print(caracter[1])
-                            Mirrory = caracter[1]
-                            break
-                        elif caracter[1].__eq__("DOUBLEMIRROR"):
-                            print(caracter[1])
-                            DoubleMirror = caracter[1]
-                            break
-                        elif caracter[1].__eq__("TRUE"):
-                            print(caracter[1])
-                            verdadero = caracter[1]
-                            break
-                        elif caracter[1].__eq__("FALSE"):
-                            print(caracter[1])
-                            falso = caracter[1]
-                            break
+            if caracter[1].__eq__("TITULO"):
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                continue
+                
+            elif caracter[1].__eq__("ANCHO"):
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                continue
+                
+            elif caracter[1].__eq__("ALTO"):
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                continue
+                
+            elif caracter[1].__eq__("FILAS"):
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                continue
+                
+            elif caracter[1].__eq__("COLUMNAS"):
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                continue
+                
+            elif caracter[1].__eq__("CELDAS"):
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                
+                continue
+                
+            elif caracter[1].__eq__("FILTROS"):
+                ValidacionUltimo = False
+                ValidacionPalbraReservada= True
+                TextTemp = caracter[1]
+                continue
+                
+        #Desplegar 
+        
+        if ValidacionUltimo == True and ValidacionPermante == True:
+            ValidacionPermante = False
+            ValidacionUltimo = False
+            ValidacionOtro = True
+            print("///////////////////")
+            print(ValidacionAsignacion, " Validacion")
+            if ValidacionAsignacion == True :
+                print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
+                print("Celdas:", ListaColores)
+                print("Filtros", ListaFiltrosTemp)
+                print("///////////////////")
+            
 
-    print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas,"Celdas:", Celdas)
+        if ValidacionOtro== True and caracter[1] == "@@@@":
+            ValidacionPermante = True
+            print("sadSADASDDASASDDS")
+            ValidacionOtro = False
+
+            ValidacionUltimo = False
+            ValidarUltimoFiltro = False
+            ValidacionCerrarCeldas = False
+
+            TextTemp = ""
+            ValidacionPalbraReservada = False
+            ValidacionData = False
+            ValidarCerrarData = False
+            ValidacionAsignacion = True
+
+            ValidacionCeldas = False
+            CeldasContador= 0
+            ValidacionFinalizacionCeldas = False
+            ValidarFiltros = False
+
+            ListaColores= []
         
 
+        #RESERVADA VALIDACION =   
+        if ValidacionPalbraReservada == True and ValidacionData==False:
+            if caracter[1].__eq__("="):
+                ValidacionData = True
+                ValidacionPalbraReservada = False
+                continue
+
+            else:
+           
+                ValidacionAsignacion = False
+                continue
+        
+        #Finalizacion Validacion Celdas
+        if ValidacionFinalizacionCeldas:
+            if caracter[1].__eq__(","):
+                ValidacionFinalizacionCeldas = False                
+                continue
+            else:
+                if CeldasContador ==1:
+                    ValidacionFinalizacionCeldas = False  
+                elif contarFiltros1 != 0 or contarFiltros2 != 0 or contarFiltros3 != 0:
+                    ValidarCerrarData = True
+                    ValidarFiltros = False
+                    ValidacionData =False
+                    ValidarUltimoFiltro = True
+
+                else:
+                    ValidacionAsignacion = False
+                    continue       
+
+        #DATA VALIDACION Resevadas
+        if ValidacionData:
+            if TextTemp.__eq__("TITULO"):
+                ValidarCerrarData = True
+                ValidacionData = False
+                cantidad = len(caracter[1])
+                if caracter[1][0] == '"' and caracter[1][cantidad-1] == '"':
+                    Titulo = caracter[1]
+                    continue
+
+                else:
+                    ValidacionAsignacion = False
+                    continue
+
+            elif TextTemp.__eq__("ANCHO") or TextTemp.__eq__("ALTO") or TextTemp.__eq__("FILAS") or TextTemp.__eq__("COLUMNAS"):
+                ValidacionData = False
+                ValidarCerrarData = True
+                if str.isdigit(caracter[1]):
+                    if TextTemp.__eq__("ANCHO"):
+                        Ancho = caracter[1]
+                        
+                    elif TextTemp.__eq__("ALTO"):
+                        Alto = caracter[1]
+                        
+                    elif TextTemp.__eq__("FILAS"):
+                        Filas = caracter[1]
+                        
+                    elif TextTemp.__eq__("COLUMNAS"):
+                        Columnas = caracter[1]
+                    continue
+                else:
+                    ValidacionAsignacion = False
+                    continue
+                     
+            elif TextTemp.__eq__("CELDAS"):
+                ValidacionData = False
+                ValidacionCeldas = True
+                
+            elif TextTemp.__eq__("FILTROS"):
+                ValidacionData = False
+                ValidarFiltros = True
+                ListaFiltrosTemp=[]
+                contarFiltros1 = 0
+                contarFiltros2 = 0
+                contarFiltros3 = 0
+                
+        #Validar Filtros
+        if ValidarFiltros:
+            
+            if caracter[1].__eq__("MIRRORX") and contarFiltros1==0 :
+                ListaFiltrosTemp.append("MIRRORX")
+                contarFiltros1= 1
+                ValidacionFinalizacionCeldas = True
+                continue
+
+            elif caracter[1].__eq__("MIRRORY") and contarFiltros2==0 :
+                ListaFiltrosTemp.append("MIRRORY")
+                contarFiltros2= 1
+                ValidacionFinalizacionCeldas = True
+                continue
+
+            elif caracter[1].__eq__("DOUBLEMIRROR") and contarFiltros3==0 :
+                ListaFiltrosTemp.append("DOUBLEMIRROR")
+                contarFiltros3= 1
+                ValidacionFinalizacionCeldas = True
+                continue
+            elif contarFiltros1!= 0 or contarFiltros2!= 0 or contarFiltros3!= 0:
+                pass
+            else:
+                ValidacionAsignacion = False
+    
+
+        #Validar si se cerro
+        if ValidarCerrarData and ValidacionCeldas== False:
+            ValidarCerrarData = False
+            if caracter[1].__eq__(";"): 
+                
+                if ValidacionCerrarCeldas:
+                    ValidacionCerrarCeldas = False
+                    ValidacionUltimo = True
+
+                if ValidarUltimoFiltro: 
+                    ValidacionUltimo = True
+                    ValidarUltimoFiltro = False
+
+                if ValidarFiltros:
+                    ValidarFiltros =False
+                    
+
+                ValidacionFinalizacionCeldas = False
+                if ValidacionUltimo == True:
+                    continue
+                else:
+                    continue
+            else:
+                ValidacionAsignacion = False
+                continue
+        
+        #Validar Elemntos de lista
+        if ValidacionCeldas:
+           
+            if caracter[1].__eq__("{") and CeldasContador == 0:
+                CeldasContador+=1
+
+            elif caracter[1].__eq__("[") and CeldasContador == 1:
+                CeldasContador+=1
+                #tEMPORALES 
+                TempListColores = []   
+                TempX = 0
+                TempY = 0
+                TempBolean = ""
+                TempColor = ""
+
+            elif str.isdigit(caracter[1]) and CeldasContador == 2:
+                CeldasContador+=1
+                ValidacionFinalizacionCeldas = True
+                TempX = caracter[1]
+                TempListColores.append(TempX)                
+
+            elif str.isdigit(caracter[1]) and CeldasContador == 3:
+                CeldasContador+=1
+                ValidacionFinalizacionCeldas = True
+                TempY = caracter[1]
+                TempListColores.append(TempY)
+              
+
+            elif (caracter[1] == "FALSE" or caracter[1] == "TRUE") and CeldasContador == 4:
+                CeldasContador+=1
+                ValidacionFinalizacionCeldas = True
+                TempBolean = caracter[1]
+                TempListColores.append(TempBolean)
+
+            elif caracter[1][0] == '#' and CeldasContador == 5:
+                cantidad = len(caracter[1])
+                if cantidad == 7:
+                    CeldasContador+=1
+                    TempColor = caracter[1]
+                    TempListColores.append(TempColor)
+                    ListaColores.append(TempListColores)
+
+            elif caracter[1].__eq__("]") and CeldasContador == 6:
+                CeldasContador =1
+                ValidacionFinalizacionCeldas = True
+
+            elif caracter[1].__eq__("}") and CeldasContador == 1:
+                CeldasContador= 0
+                ValidarCerrarData = True
+                ValidacionCeldas = False
+                ValidacionCerrarCeldas = True
+                
+            else:
+                ValidacionAsignacion = False    
+
+
+        
+    if ValidacionUltimo == True and ValidacionPermante == True:
+            ValidacionUltimo = False
+            ValidacionOtro = True
+            print("///////////////////")
+            print(ValidacionAsignacion, " Validacion")
+            if ValidacionAsignacion == True :
+                print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
+                print("Celdas:", ListaColores)
+                print("Filtros", ListaFiltrosTemp)
+                print("///////////////////")
+            
+
+    """print(ValidacionAsignacion, " Validacion")
+    if ValidacionAsignacion == True :
+        print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
+        print("Celdas:", ListaColores)
+        print("Filtros", ListaFiltrosTemp)"""
+
+def PalabraReservaVerificacion(data):
+    if data == "=":
+        return True
 
 def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas):
 
@@ -526,4 +792,23 @@ def TablaTokens():
 
 
 
-    
+"""    
+ elif caracter[1].__eq__("MIRRORX"):
+                print(caracter[1])
+                Mirrorx = caracter[1]
+                
+            elif caracter[1].__eq__("MIRRORY"):
+                print(caracter[1])
+                Mirrory = caracter[1]
+                
+            elif caracter[1].__eq__("DOUBLEMIRROR"):
+                print(caracter[1])
+                DoubleMirror = caracter[1]
+                
+            elif caracter[1].__eq__("TRUE"):
+                print(caracter[1])
+                verdadero = caracter[1]
+                
+            elif caracter[1].__eq__("FALSE"):
+                print(caracter[1])
+                falso = caracter[1]"""
