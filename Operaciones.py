@@ -7,9 +7,11 @@ lista_e = lista_enlazada()
 PalabrasReservadas = []
 Tokens = []
 Errores = []
-Asignar = True
+
 
 def openExtra():
+    
+    
     Tk().withdraw()
     archivo = filedialog.askopenfile(
         title = "Seleccionar un archivo PXLA",
@@ -31,6 +33,12 @@ def openExtra():
 
 #Obtiene la cadena de texto
 def purificacionExtra():
+    global Tokens
+    Tokens = []
+    global Errores
+    Errores = []
+
+
     verificacion = True
     errortipo=""
 
@@ -422,7 +430,7 @@ def purificacionExtra():
 
     print("///////////////////")
     print(Tokens)
-   
+    ConfromacionEntrada()
     #print(Tokens[0])
     #print(Tokens[0][1])
     
