@@ -1,10 +1,10 @@
-    TITULO="Pokebola";
-    ANCHO=300X;
+    TITULOS="Pokebola";
+    ANCHOS=300X;
     ALTO=30Y0;
-    FILAS=12;
+    FILASI=12;
     COLUMNAS=12;
     CELDAS = {
-            [0,0,FALSE,#000000],
+            [0,0,FALSES,#000000],
             [1,1,TRUE,#000000],
             [2,3,FALSE,#000000]
     };

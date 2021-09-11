@@ -1,11 +1,12 @@
 class ListaImagenes:
-  def __init__(self,Titulo,Ancho,Alto,Filas,Columnas,Celdas):
+  def __init__(self,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
     self.Titulo=Titulo
     self.Ancho=Ancho
     self.Alto=Alto
     self.Filas=Filas
     self.Columnas=Columnas
     self.Celdas=Celdas
+    self.Filtros=Filtros
     self.Original=None
     self.MIRRORX =None
     self.MIRRORY =None
@@ -34,7 +35,7 @@ class lista_enlazada:
     print("\n")
     actual= self.primero
     while actual != None:
-      print("Titulo:", actual.Nodo.Titulo,"Ancho:", actual.Nodo.Ancho,"Alto:", actual.Nodo.Alto,"Filas:", actual.Nodo.Filas,"Columnas:", actual.Nodo.Columnas,"Celdas:", actual.Nodo.Celdas)
+      print("Titulo:", actual.Nodo.Titulo,"Ancho:", actual.Nodo.Ancho,"Alto:", actual.Nodo.Alto,"Filas:", actual.Nodo.Filas,"Columnas:", actual.Nodo.Columnas,"Celdas:", actual.Nodo.Celdas,"Filtros",actual.Nodo.Filtros)
       actual = actual.siguiente
 
 

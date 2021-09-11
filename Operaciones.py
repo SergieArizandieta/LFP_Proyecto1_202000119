@@ -76,6 +76,7 @@ def purificacionExtra():
                     txtTemp += txt
                     estado = 6
                     opcion = False
+                    print("ARROBA")
 
                 else:
 
@@ -142,7 +143,6 @@ def purificacionExtra():
                         estado = 0
                         opcion = True
 
-
             elif estado == 2:
                 if verificacion == True:
                     if len(txtTemp)>1:
@@ -200,8 +200,7 @@ def purificacionExtra():
                     txtTemp += txt
                     estado = 2
                     opcion = False
-                    
-                 
+                       
             elif estado == 4:
                 opcion = False
            
@@ -210,12 +209,6 @@ def purificacionExtra():
                     estado = 4
 
                 else:
-
-                    
-
-
-
-
                     if verificacion == True:
                         print("Se reconocio en S4: '" + txtTemp + "' F: " + str(fila) + ", C: " + str(columna - len(txtTemp)))
                         TokensTemp = []
@@ -273,7 +266,6 @@ def purificacionExtra():
                     errortemp.append(columna)
                     Errores.append(errortemp)
                         
-            
             elif estado == 9:
                 opcion = False
            
@@ -360,8 +352,9 @@ def purificacionExtra():
                     errortipo = 'Caracter inesperado, esperaba @'
                     verificacion = False
                     txtTemp += txt
-                    estado = 8
+                    estado = 0
                     print("Error Lexico, se detecto " + txt + " en S6  F: " + str(fila) + ", C: " + str(columna))
+                    txtTemp = ""
                     errortemp =[]
                     errortemp.append(txt)
                     errortemp.append(errortipo)
@@ -379,8 +372,9 @@ def purificacionExtra():
                     errortipo= 'Caracter inesperado, esperaba @'
                     verificacion = False
                     txtTemp += txt
-                    estado = 10
+                    estado = 0
                     print("Error Lexico, se detecto " + txt + " en S8  F: " + str(fila) + ", C: " + str(columna))
+                    txtTemp = ""
                     errortemp =[]
                     errortemp.append(txt)
                     errortemp.append(errortipo)
@@ -398,8 +392,9 @@ def purificacionExtra():
                     errortipo = 'Caracter inesperado, esperaba @'
                     verificacion = False
                     txtTemp += txt
-                    estado = 2
+                    estado = 0
                     print("Error Lexico, se detecto " + txt + " en S10  F: " + str(fila) + ", C: " + str(columna))
+                    txtTemp = ""
                     errortemp =[]
                     errortemp.append(txt)
                     errortemp.append(errortipo)
@@ -427,9 +422,7 @@ def purificacionExtra():
 
     print("///////////////////")
     print(Tokens)
-    print("///////////////////")
-    print(Errores)
-    print("///////////////////")
+   
     #print(Tokens[0])
     #print(Tokens[0][1])
     
@@ -536,15 +529,16 @@ def ConfromacionEntrada():
             print("///////////////////")
             print(ValidacionAsignacion, " Validacion")
             if ValidacionAsignacion == True :
-                print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
-                print("Celdas:", ListaColores)
-                print("Filtros", ListaFiltrosTemp)
+                AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+               #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
+                #print("Celdas:", ListaColores)
+                #print("Filtros", ListaFiltrosTemp)
                 print("///////////////////")
             
 
         if ValidacionOtro== True and caracter[1] == "@@@@":
             ValidacionPermante = True
-            print("sadSADASDDASASDDS")
+            #print("sadSADASDDASASDDS")
             ValidacionOtro = False
 
             ValidacionUltimo = False
@@ -563,6 +557,15 @@ def ConfromacionEntrada():
             ValidarFiltros = False
 
             ListaColores= []
+        elif  ValidacionOtro== False and caracter[1] == "@@@@":
+            errortipo= 'No se esperaba "@@@@" ' 
+            errortemp =[]
+            errortemp.append(caracter[1])
+            errortemp.append(errortipo)
+            errortemp.append(caracter[2])
+            errortemp.append(int(caracter[3]))
+            Errores.append(errortemp)
+
         
 
         #RESERVADA VALIDACION =   
@@ -575,6 +578,13 @@ def ConfromacionEntrada():
             else:
            
                 ValidacionAsignacion = False
+                errortipo= 'Caracter inesperado, se esperaba "="' 
+                errortemp =[]
+                errortemp.append(caracter[1])
+                errortemp.append(errortipo)
+                errortemp.append(caracter[2])
+                errortemp.append(int(caracter[3]))
+                Errores.append(errortemp)
                 continue
         
         #Finalizacion Validacion Celdas
@@ -593,6 +603,13 @@ def ConfromacionEntrada():
 
                 else:
                     ValidacionAsignacion = False
+                    errortipo= 'Caracter inesperado, se esperaba ","' 
+                    errortemp =[]
+                    errortemp.append(caracter[1])
+                    errortemp.append(errortipo)
+                    errortemp.append(caracter[2])
+                    errortemp.append(int(caracter[3]))
+                    Errores.append(errortemp)
                     continue       
 
         #DATA VALIDACION Resevadas
@@ -607,6 +624,13 @@ def ConfromacionEntrada():
 
                 else:
                     ValidacionAsignacion = False
+                    errortipo= 'Caracter inesperado, se esperaba el Patron de Titulo' 
+                    errortemp =[]
+                    errortemp.append(caracter[1])
+                    errortemp.append(errortipo)
+                    errortemp.append(caracter[2])
+                    errortemp.append(int(caracter[3]))
+                    Errores.append(errortemp)
                     continue
 
             elif TextTemp.__eq__("ANCHO") or TextTemp.__eq__("ALTO") or TextTemp.__eq__("FILAS") or TextTemp.__eq__("COLUMNAS"):
@@ -627,6 +651,14 @@ def ConfromacionEntrada():
                     continue
                 else:
                     ValidacionAsignacion = False
+                    ValidacionAsignacion = False
+                    errortipo= 'Caracter inesperado, se esperaba un digito ' 
+                    errortemp =[]
+                    errortemp.append(caracter[1])
+                    errortemp.append(errortipo)
+                    errortemp.append(caracter[2])
+                    errortemp.append(int(caracter[3]))
+                    Errores.append(errortemp)
                     continue
                      
             elif TextTemp.__eq__("CELDAS"):
@@ -644,7 +676,7 @@ def ConfromacionEntrada():
         #Validar Filtros
         if ValidarFiltros:
             
-            if caracter[1].__eq__("MIRRORX") and contarFiltros1==0 :
+            if caracter[1].__eq__("MIRRORX") and contarFiltros1==0 :                
                 ListaFiltrosTemp.append("MIRRORX")
                 contarFiltros1= 1
                 ValidacionFinalizacionCeldas = True
@@ -665,6 +697,14 @@ def ConfromacionEntrada():
                 pass
             else:
                 ValidacionAsignacion = False
+                errortipo= 'Caracter inesperado, esperado, no cumple con el patro de Filtros' 
+                errortemp =[]
+                errortemp.append(caracter[1])
+                errortemp.append(errortipo)
+                errortemp.append(caracter[2])
+                errortemp.append(int(caracter[3]))
+                Errores.append(errortemp)
+                
     
 
         #Validar si se cerro
@@ -691,6 +731,13 @@ def ConfromacionEntrada():
                     continue
             else:
                 ValidacionAsignacion = False
+                errortipo= 'Caracter inesperado, se esperaba ";" ' 
+                errortemp =[]
+                errortemp.append(caracter[1])
+                errortemp.append(errortipo)
+                errortemp.append(caracter[2])
+                errortemp.append(int(caracter[3]))
+                Errores.append(errortemp)
                 continue
         
         #Validar Elemntos de lista
@@ -746,7 +793,32 @@ def ConfromacionEntrada():
                 ValidacionCerrarCeldas = True
                 
             else:
-                ValidacionAsignacion = False    
+                ValidacionAsignacion = False
+
+                if CeldasContador == 0:
+                     errortipo= 'Caracter inesperado, se esperaba "{"' 
+                elif CeldasContador == 1:
+                    errortipo= 'Caracter inesperado, se esperaba "["' 
+                elif CeldasContador == 2:
+                    errortipo= 'Caracter inesperado, se un digito ' 
+                elif CeldasContador == 3:
+                    errortipo= 'Caracter inesperado, se esperaba un digito ' 
+                elif CeldasContador == 4:
+                    errortipo= 'Caracter inesperado, esperado, palabra reservada True|False ' 
+                elif CeldasContador == 5:
+                    errortipo= 'Caracter inesperado, esperado, palabra patron Color '
+                elif CeldasContador == 6:
+                    errortipo= 'Caracter inesperado, se espera "]"'
+                CeldasContador= 0
+                ValidacionCeldas = False
+               
+                errortemp =[]
+                errortemp.append(caracter[1])
+                errortemp.append(errortipo)
+                errortemp.append(caracter[2])
+                errortemp.append(caracter[3])
+                Errores.append(errortemp)
+                
 
 
         
@@ -756,11 +828,16 @@ def ConfromacionEntrada():
             print("///////////////////")
             print(ValidacionAsignacion, " Validacion")
             if ValidacionAsignacion == True :
-                print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
-                print("Celdas:", ListaColores)
-                print("Filtros", ListaFiltrosTemp)
+                AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+                
+                #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
+                #print("Celdas:", ListaColores)
+                #print("Filtros", ListaFiltrosTemp)
                 print("///////////////////")
-            
+    lista_e.recorrer()
+    
+    print(Errores)
+    print("///////////////////")
 
     """print(ValidacionAsignacion, " Validacion")
     if ValidacionAsignacion == True :
@@ -772,13 +849,13 @@ def PalabraReservaVerificacion(data):
     if data == "=":
         return True
 
-def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas):
+def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
 
     if Asignar == True:
-        e1 = ListaImagenes(Titulo,Ancho,Alto,Filas,Columnas,Celdas)
+        e1 = ListaImagenes(Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros)
         
         lista_e.insertar(e1)
-        lista_e.recorrer()
+        
     else:
         pass
 
@@ -789,9 +866,6 @@ def TablaTokens():
     PalabrasReservadas = ["TITULO","ANCHO","ALTO","FILAS","COLUMNAS","CELDAS","FILTROS","MIRRORX","MIRRORY","DOUBLEMIRROR","TRUE","FALSE"]
     #print(PalabrasReservadas)
     
-
-
-
 """    
  elif caracter[1].__eq__("MIRRORX"):
                 print(caracter[1])
