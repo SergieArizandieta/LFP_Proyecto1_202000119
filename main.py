@@ -6,7 +6,7 @@ if __name__ == "__main__":
        
 
 
-    try:
+    #try:
         
         #GenrarImg()
        
@@ -18,7 +18,7 @@ if __name__ == "__main__":
         purificacionExtra()
 
 
-    except Exception:
+    #except Exception:
         #print ("\nError vuelva a intentarlo\n", Exception)
-        print()
+        #print()
             

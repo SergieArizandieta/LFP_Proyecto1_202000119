@@ -1,8 +1,8 @@
-from tkinter.constants import PROJECTING, X
-import math
 
+import math
+import copy
 class ListaImagenes:
-  def __init__(self,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
+  def __init__(self,Titulo,Ancho,Alto,Filas,Columnas,CeldasNomrales,Filtros):
     title = Titulo[1:]
     title = title[:-1]
     self.Titulo=title
@@ -10,12 +10,15 @@ class ListaImagenes:
     self.Alto=Alto
     self.Filas=Filas
     self.Columnas=Columnas
-    self.Celdas=Celdas
+    self.Celdas= CeldasNomrales
     self.Filtros=Filtros
     self.Original=None
-    self.MIRRORX =None
-    self.MIRRORY =None
-    self.DOUBLEMIRROR =None
+  
+ 
+
+    self.MIRRORX = False
+    self.MIRRORY =False
+    self.DOUBLEMIRROR =False
 
 
 class nodo:
@@ -56,29 +59,35 @@ class lista_enlazada:
     if actual is not None:
       if actual.Titulo.Titulo == Titulo:
         print("\Titulo a procesar: ", actual.Titulo.Titulo)
-     #FILTROS-----------------------------------------------------
+
   def VerificarFiltros(self):
-    
-    print("\n")
     actual= self.primero
     while actual != None:
-      for filtro in actual.Nodo.Filtros:
-        print(filtro)
-      actual = actual.siguiente
+      for Filtro in actual.Nodo.Filtros:
+        
+        if Filtro.__eq__("MIRRORX"):
+          actual.Nodo.MIRRORX = True
+        elif Filtro.__eq__("MIRRORY"):
+          actual.Nodo.MIRRORY = True
+        elif Filtro.__eq__("DOUBLEMIRROR"):
+          actual.Nodo.DOUBLEMIRROR = True
       
+      actual = actual.siguiente
+
+ 
   def GeneararFiltroDouble(self):
-    
+    Temp= []
     actual= self.primero
     enX = int(actual.Nodo.Columnas)-1
     actual= self.primero
     enY = int(actual.Nodo.Filas)-1
 
     while actual != None:
-      actual.Nodo.DOUBLEMIRROR =  actual.Nodo.Celdas
-      catindad = len(actual.Nodo.DOUBLEMIRROR)
+      Temp =  actual.Nodo.Celdas
+      catindad = len(Temp)
       for i in range(0, int(catindad)): 
-        actual.Nodo.DOUBLEMIRROR[i][0] = enX - int(actual.Nodo.DOUBLEMIRROR[i][0]) 
-        actual.Nodo.DOUBLEMIRROR[i][1] = enY - int(actual.Nodo.DOUBLEMIRROR[i][1]) 
+        Temp[i][0] = enX - int(Temp[i][0]) 
+        Temp[i][1] = enY - int(Temp[i][1]) 
       actual = actual.siguiente
 
      #Generar HTML---------------------------------------------------------------
@@ -95,14 +104,14 @@ class lista_enlazada:
       Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
       Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
       Contenido += '</style></head><body> \n <div class="canvas">\n'
-      catindad = len(actual.Nodo.DOUBLEMIRROR)
+      catindad = len(Temp)
       
       for y in range(0, int(actual.Nodo.Filas) ):
         for x in range(0, int(actual.Nodo.Columnas) ):
             for i in range(0, int(catindad)):
-              if int(actual.Nodo.DOUBLEMIRROR[i][0]) == x and int(actual.Nodo.DOUBLEMIRROR[i][1]) == y:
-                if actual.Nodo.DOUBLEMIRROR[i][2].__eq__("TRUE"):
-                  Contenido+='<div class="pixel" style="background-color:' +actual.Nodo.DOUBLEMIRROR[i][3] +  ';"></div>\n'
+              if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
+                if Temp[i][2].__eq__("TRUE"):
+                  Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
                 else:
                   Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
                 encontrado = True
@@ -115,21 +124,22 @@ class lista_enlazada:
               continue        
      
       Contenido += '</div>\n</body></html>'
-     
-      GenerarReportes(actual.Nodo.Titulo,Contenido,"DOUBLE")
+      if actual.Nodo.DOUBLEMIRROR == True:
+        GenerarReportes(actual.Nodo.Titulo,Contenido,"DOUBLE")
+       
       Contenido = htmlInicial
       actual = actual.siguiente
 
   def GeneararFiltroY(self):
-      
+      Temp= []
       actual= self.primero
       enY = int(actual.Nodo.Filas)-1
 
       while actual != None:
-        actual.Nodo.MIRRORY =  actual.Nodo.Celdas
-        catindad = len(actual.Nodo.MIRRORY)
+        Temp = copy.deepcopy(actual.Nodo.Celdas)
+        catindad = len(Temp)
         for i in range(0, int(catindad)): 
-          actual.Nodo.MIRRORY[i][1] = enY - int(actual.Nodo.MIRRORY[i][1]) 
+          Temp[i][1] = enY - int(Temp[i][1]) 
         actual = actual.siguiente
 
       #Generar HTML---------------------------------------------------------------
@@ -148,14 +158,14 @@ class lista_enlazada:
         Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
         Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
         Contenido += '</style></head><body> \n <div class="canvas">\n'
-        catindad = len(actual.Nodo.MIRRORY)
+        catindad = len(Temp)
         
         for y in range(0, int(actual.Nodo.Filas) ):
           for x in range(0, int(actual.Nodo.Columnas) ):
               for i in range(0, int(catindad)):
-                if int(actual.Nodo.MIRRORY[i][0]) == x and int(actual.Nodo.MIRRORY[i][1]) == y:
-                  if actual.Nodo.MIRRORY[i][2].__eq__("TRUE"):
-                    Contenido+='<div class="pixel" style="background-color:' +actual.Nodo.MIRRORY[i][3] +  ';"></div>\n'
+                if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
+                  if Temp[i][2].__eq__("TRUE"):
+                    Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
                   else:
                     Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
                   encontrado = True
@@ -167,25 +177,31 @@ class lista_enlazada:
                 continue        
       
         Contenido += '</div>\n</body></html>'
-        GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORY")
+        if actual.Nodo.MIRRORY == True:
+          GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORY")
         Contenido = htmlInicial
         actual = actual.siguiente
 
   def GeneararFiltroX(self):
+    Temp= []
+    actual= self.primero
     
-    actual= self.primero
     enX = int(actual.Nodo.Columnas)-1
+    
     while actual != None:
-      actual.Nodo.MIRRORX =  actual.Nodo.Celdas
-      catindad = len(actual.Nodo.MIRRORX)
-      for i in range(0, int(catindad)): 
-        actual.Nodo.MIRRORX[i][0] = enX - int(actual.Nodo.MIRRORX[i][0]) 
-      actual = actual.siguiente
-
-     #Generar HTML---------------------------------------------------------------
+      Temp = copy.deepcopy(actual.Nodo.Celdas)
       
+      
+      catindad = len(Temp)
+      for i in range(0, int(catindad)): 
+        Temp[i][0] = enX - int(Temp[i][0]) 
+      actual = actual.siguiente
+    #Generar HTML---------------------------------------------------------------
+
     Contenido = htmlInicial
+
     actual= self.primero
+    
     encontrado= False
 
     while actual != None:
@@ -198,14 +214,14 @@ class lista_enlazada:
       Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
       Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
       Contenido += '</style></head><body> \n <div class="canvas">\n'
-      catindad = len(actual.Nodo.MIRRORX)
+      catindad = len(Temp)
       
       for y in range(0, int(actual.Nodo.Filas) ):
         for x in range(0, int(actual.Nodo.Columnas) ):
             for i in range(0, int(catindad)):
-              if int(actual.Nodo.MIRRORX[i][0]) == x and int(actual.Nodo.MIRRORX[i][1]) == y:
-                if actual.Nodo.MIRRORX[i][2].__eq__("TRUE"):
-                  Contenido+='<div class="pixel" style="background-color:' +actual.Nodo.MIRRORX[i][3] +  ';"></div>\n'
+              if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
+                if Temp[i][2].__eq__("TRUE"):
+                  Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
                 else:
                   Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
                 encontrado = True
@@ -218,9 +234,11 @@ class lista_enlazada:
               continue        
      
       Contenido += '</div>\n</body></html>'
-     
-      GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORX")
+      if actual.Nodo.MIRRORX == True:
+        GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORX")
       Contenido = htmlInicial
+     
+
       actual = actual.siguiente
 
   def GenrarHTML(self):
@@ -244,12 +262,13 @@ class lista_enlazada:
       
       for y in range(0, int(actual.Nodo.Filas) ):
         for x in range(0, int(actual.Nodo.Columnas) ):
-            print(x,",",y)
+          
+
             for i in range(0, int(catindad)):
               if int(actual.Nodo.Celdas[i][0]) == x and int(actual.Nodo.Celdas[i][1]) == y:
                 if actual.Nodo.Celdas[i][2].__eq__("TRUE"):
                   Contenido+='<div class="pixel" style="background-color:' +actual.Nodo.Celdas[i][3] +  ';"></div>\n'
-                  print(actual.Nodo.Celdas[i])
+                
                 else:
                   #print(actual.Nodo.Celdas[i])
                   Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
@@ -266,6 +285,7 @@ class lista_enlazada:
      
       GenerarReportes(actual.Nodo.Titulo,Contenido,"ORIGINAR")
       Contenido = htmlInicial
+      
       actual = actual.siguiente
 
 def GenerarReportes(Titulo,Contenido,tipo):
@@ -276,7 +296,7 @@ def GenerarReportes(Titulo,Contenido,tipo):
     except:
         print("La creación del Reporte falló")
     else:
-        print("Se ha creado el Reporte" )
+        print("Se ha creado el Reporte de",Titulo,"Filtro:",tipo )
 
 htmlInicial = """  <!DOCTYPE html><html>
 <head><style >

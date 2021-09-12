@@ -879,7 +879,7 @@ def PalabraReservaVerificacion(data):
         return True
 
 def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
-
+    
     if Asignar == True:
         e1 = ListaImagenes(Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros)
         
