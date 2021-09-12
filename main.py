@@ -1,17 +1,24 @@
 
 from Operaciones import *
 from Grafica import *
-
+from prueba import * 
 if __name__ == "__main__":
-   
-    #try:
-        #print("Hola")
+       
+
+
+    try:
+        
+        #GenrarImg()
+       
         reportes()
         TablaTokens()
 
         #ventana()
+        
         purificacionExtra()
-    #except Exception:
+
+
+    except Exception:
         #print ("\nError vuelva a intentarlo\n", Exception)
-       # print()
+        print()
             
