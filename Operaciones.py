@@ -1,6 +1,7 @@
 from tkinter import filedialog, Tk
-from tkinter.constants import FALSE
 from ListaSimple import *
+from CrearImagenes import *
+
 
 lista_e = lista_enlazada()
 
@@ -84,7 +85,7 @@ def purificacionExtra():
                     txtTemp += txt
                     estado = 6
                     opcion = False
-                    print("ARROBA")
+                    #print("ARROBA")
 
                 else:
 
@@ -242,6 +243,9 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 7
+                elif (isLetra(txt)):
+                    txtTemp += txt
+                    estado = 7
                 else:
                     errortipo= 'Caracter inesperado, esperaba D'
                     verificacion = False
@@ -259,6 +263,9 @@ def purificacionExtra():
                 opcion = False
            
                 if (isNumero(txt)):
+                    txtTemp += txt
+                    estado = 9
+                elif (isLetra(txt)):
                     txtTemp += txt
                     estado = 9
                 else:
@@ -280,6 +287,9 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 11
+                elif (isLetra(txt)):
+                    txtTemp += txt
+                    estado = 11
                 else:
                     errortipo= 'Caracter inesperado, esperaba D' 
                     verificacion = False
@@ -297,6 +307,9 @@ def purificacionExtra():
                 opcion = False
            
                 if (isNumero(txt)):
+                    txtTemp += txt
+                    estado = 12
+                elif (isLetra(txt)):
                     txtTemp += txt
                     estado = 12
                 else:
@@ -318,6 +331,9 @@ def purificacionExtra():
                 if (isNumero(txt)):
                     txtTemp += txt
                     estado = 13
+                elif (isLetra(txt)):
+                    txtTemp += txt
+                    estado = 13
                 else:
                     errortipo= 'Caracter inesperado, esperaba D'
                     verificacion = False
@@ -335,6 +351,9 @@ def purificacionExtra():
                 opcion = False
            
                 if (isNumero(txt)):
+                    txtTemp += txt
+                    estado = 2
+                elif (isLetra(txt)):
                     txtTemp += txt
                     estado = 2
                 else:
@@ -429,7 +448,7 @@ def purificacionExtra():
         columna += 1
 
     print("///////////////////")
-    print(Tokens)
+    #print(Tokens)
     ConfromacionEntrada()
     #print(Tokens[0])
     #print(Tokens[0][1])
@@ -461,6 +480,8 @@ def ConfromacionEntrada():
     contarFiltros1= 0
     contarFiltros2= 0
     contarFiltros3= 0
+
+    ListaFiltrosTemp = None
 
     ValidacionPermante = True
 
@@ -534,14 +555,14 @@ def ConfromacionEntrada():
             ValidacionPermante = False
             ValidacionUltimo = False
             ValidacionOtro = True
-            print("///////////////////")
-            print(ValidacionAsignacion, " Validacion")
+            #print("///////////////////")
+            #print(ValidacionAsignacion, " Validacion")
             if ValidacionAsignacion == True :
                 AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
                #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
                 #print("Celdas:", ListaColores)
                 #print("Filtros", ListaFiltrosTemp)
-                print("///////////////////")
+                #print("///////////////////")
             
 
         if ValidacionOtro== True and caracter[1] == "@@@@":
@@ -833,19 +854,19 @@ def ConfromacionEntrada():
     if ValidacionUltimo == True and ValidacionPermante == True:
             ValidacionUltimo = False
             ValidacionOtro = True
-            print("///////////////////")
-            print(ValidacionAsignacion, " Validacion")
+            #print("///////////////////")
+            #print(ValidacionAsignacion, " Validacion")
             if ValidacionAsignacion == True :
                 AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
                 
                 #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
                 #print("Celdas:", ListaColores)
                 #print("Filtros", ListaFiltrosTemp)
-                print("///////////////////")
-    lista_e.recorrer()
+                #print("///////////////////")
+    CrearImagenes()
     
-    print(Errores)
-    print("///////////////////")
+    #print(Errores)
+    #print("///////////////////")
 
     """print(ValidacionAsignacion, " Validacion")
     if ValidacionAsignacion == True :

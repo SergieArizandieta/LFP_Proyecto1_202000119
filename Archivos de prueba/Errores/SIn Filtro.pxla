@@ -6,7 +6,10 @@
     CELDAS = {
             [0,0,FALSE,#000000],
             [1,1,TRUE,#000000],
-            [2,3,FALSE,#FFFF0F]
+            [2,3,FALSE,#000000]
     };
-    FILTROS = MIRRORX;
+ 
+
+
+
 

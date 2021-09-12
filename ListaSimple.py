@@ -36,6 +36,7 @@ class lista_enlazada:
     actual= self.primero
     while actual != None:
       print("Titulo:", actual.Nodo.Titulo,"Ancho:", actual.Nodo.Ancho,"Alto:", actual.Nodo.Alto,"Filas:", actual.Nodo.Filas,"Columnas:", actual.Nodo.Columnas,"Celdas:", actual.Nodo.Celdas,"Filtros",actual.Nodo.Filtros)
+
       actual = actual.siguiente
 
 
@@ -51,6 +52,85 @@ class lista_enlazada:
     if actual is not None:
       if actual.Titulo.Titulo == Titulo:
         print("\Titulo a procesar: ", actual.Titulo.Titulo)
+
+  def GenrarHTMLOrginal(self):
+
+    print("\n")
+    actual= self.primero
+
+    while actual != None:
+      
+      
+      print( actual.Nodo.Celdas[0][1])
+      actual = actual.siguiente
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+htmlInicial = """<!DOCTYPE html>
+<html>
+
+<!--Encabezado-->
+<head>
+<meta charset="UTF-8">
+<meta name="name" content="Reporte">
+<meta name="description" content="name">
+<meta name="keywods" content="python,dos,tres">
+<meta name="robots" content="Index, Follow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/styles.css"/>
+<title>Reporte</title>
+</head>
+<!----Curerpo--->
+<body>
+   <center><h6 class=\"titulos\" ><b> Reportes </b></h6>"""
+
+htmlFinal = """<br><footer style="background-color:white;">Creado por: Sergie Daniel Arizandieta Yol - 202000119</footer>
+</center></body>
+</html>"""
+
+
        
 """if __name__ == "__main__":
 
