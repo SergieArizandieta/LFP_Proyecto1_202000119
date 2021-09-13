@@ -485,19 +485,21 @@ def isNumero(txt):
         return False
 
 def ConfromacionEntrada(): 
+    tituloValidacion = False
+    anchoValidacion = False
+    altoValidacion = False
+    filasValidacion = False
+    columnaValidacion = False
+
     contarFiltros1= 0
     contarFiltros2= 0
     contarFiltros3= 0
 
     ListaFiltrosTemp = None
 
-    ValidacionPermante = True
-
-    ValidacionOtro = False
+    ValidacionPermante = False
 
 
-    ValidacionUltimo = False
-    ValidarUltimoFiltro = False
     ValidacionCerrarCeldas = False
 
     TextTemp = ""
@@ -512,13 +514,14 @@ def ConfromacionEntrada():
     ValidarFiltros = False
 
     ListaColores= []
- 
+    
+    otroFiltro = False
 
     for caracter in Tokens:    
         #print(caracter[0])
     
         #Buscar si es palabra reservada
-        if caracter[0] == "RESERVADA" and ValidacionPalbraReservada == False:
+        if caracter[0] == "RESERVADA" and ValidacionPalbraReservada == False and otroFiltro == False:
      
             if caracter[1].__eq__("TITULO"):
                 ValidacionPalbraReservada= True
@@ -552,34 +555,49 @@ def ConfromacionEntrada():
                 continue
                 
             elif caracter[1].__eq__("FILTROS"):
-                ValidacionUltimo = False
+                
                 ValidacionPalbraReservada= True
                 TextTemp = caracter[1]
                 continue
                 
         #Desplegar 
         
-        if ValidacionUltimo == True and ValidacionPermante == True:
+        if   ValidacionPermante == True:
             ValidacionPermante = False
-            ValidacionUltimo = False
-            ValidacionOtro = True
             #print("///////////////////")
             #print(ValidacionAsignacion, " Validacion")
             if ValidacionAsignacion == True :
-                AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+                if tituloValidacion == True and anchoValidacion == True and altoValidacion == True and filasValidacion == True and columnaValidacion == True:
+                    AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+                    tituloValidacion = False
+                    anchoValidacion = False
+                    altoValidacion = False
+                    filasValidacion = False
+                    columnaValidacion = False
+                else:
+                   
+                    print(tituloValidacion,anchoValidacion,altoValidacion,filasValidacion,columnaValidacion)
+                    errortipo= 'No se ingreso data de una palabra reservada ' 
+                    errortemp =[]
+                    errortemp.append(" ")
+                    errortemp.append(errortipo)
+                    errortemp.append(" - ")
+                    errortemp.append(" - ")
+                    Errores.append(errortemp)
                #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
                 #print("Celdas:", ListaColores)
                 #print("Filtros", ListaFiltrosTemp)
                 #print("///////////////////")
             
 
-        if ValidacionOtro== True and caracter[1] == "@@@@":
+        if   caracter[1] == "@@@@":
+           
+
+            
             ValidacionPermante = True
             #print("sadSADASDDASASDDS")
-            ValidacionOtro = False
+           
 
-            ValidacionUltimo = False
-            ValidarUltimoFiltro = False
             ValidacionCerrarCeldas = False
 
             TextTemp = ""
@@ -594,14 +612,7 @@ def ConfromacionEntrada():
             ValidarFiltros = False
 
             ListaColores= []
-        elif  ValidacionOtro== False and caracter[1] == "@@@@":
-            errortipo= 'No se esperaba "@@@@" ' 
-            errortemp =[]
-            errortemp.append(caracter[1])
-            errortemp.append(errortipo)
-            errortemp.append(caracter[2])
-            errortemp.append(int(caracter[3]))
-            Errores.append(errortemp)
+       
 
         
 
@@ -627,7 +638,8 @@ def ConfromacionEntrada():
         #Finalizacion Validacion Celdas
         if ValidacionFinalizacionCeldas:
             if caracter[1].__eq__(","):
-                ValidacionFinalizacionCeldas = False                
+                ValidacionFinalizacionCeldas = False   
+                otroFiltro = True             
                 continue
             else:
                 if CeldasContador ==1:
@@ -636,7 +648,7 @@ def ConfromacionEntrada():
                     ValidarCerrarData = True
                     ValidarFiltros = False
                     ValidacionData =False
-                    ValidarUltimoFiltro = True
+                
 
                 else:
                     ValidacionAsignacion = False
@@ -657,6 +669,7 @@ def ConfromacionEntrada():
                 cantidad = len(caracter[1])
                 if caracter[1][0] == '"' and caracter[1][cantidad-1] == '"':
                     Titulo = caracter[1]
+                    tituloValidacion = True
                     continue
 
                 else:
@@ -676,15 +689,19 @@ def ConfromacionEntrada():
                 if str.isdigit(caracter[1]):
                     if TextTemp.__eq__("ANCHO"):
                         Ancho = caracter[1]
+                        anchoValidacion = True
                         
                     elif TextTemp.__eq__("ALTO"):
                         Alto = caracter[1]
+                        altoValidacion = True
                         
                     elif TextTemp.__eq__("FILAS"):
                         Filas = caracter[1]
+                        filasValidacion = True
                         
                     elif TextTemp.__eq__("COLUMNAS"):
                         Columnas = caracter[1]
+                        columnaValidacion = True
                     continue
                 else:
                     ValidacionAsignacion = False
@@ -717,22 +734,27 @@ def ConfromacionEntrada():
                 ListaFiltrosTemp.append("MIRRORX")
                 contarFiltros1= 1
                 ValidacionFinalizacionCeldas = True
+              
                 continue
 
             elif caracter[1].__eq__("MIRRORY") and contarFiltros2==0 :
                 ListaFiltrosTemp.append("MIRRORY")
                 contarFiltros2= 1
                 ValidacionFinalizacionCeldas = True
+               
                 continue
 
             elif caracter[1].__eq__("DOUBLEMIRROR") and contarFiltros3==0 :
                 ListaFiltrosTemp.append("DOUBLEMIRROR")
                 contarFiltros3= 1
                 ValidacionFinalizacionCeldas = True
+              
                 continue
-            elif contarFiltros1!= 0 or contarFiltros2!= 0 or contarFiltros3!= 0:
-                pass
+            #elif contarFiltros1!= 0 or contarFiltros2!= 0 or contarFiltros3!= 0:
+                #pass
             else:
+                otroFiltro = False  
+                ValidarFiltros =False
                 ValidacionAsignacion = False
                 errortipo= 'Caracter inesperado, esperado, no cumple con el patro de Filtros' 
                 errortemp =[]
@@ -751,21 +773,13 @@ def ConfromacionEntrada():
                 
                 if ValidacionCerrarCeldas:
                     ValidacionCerrarCeldas = False
-                    ValidacionUltimo = True
-
-                if ValidarUltimoFiltro: 
-                    ValidacionUltimo = True
-                    ValidarUltimoFiltro = False
-
+                otroFiltro = False
                 if ValidarFiltros:
                     ValidarFiltros =False
                     
 
                 ValidacionFinalizacionCeldas = False
-                if ValidacionUltimo == True:
-                    continue
-                else:
-                    continue
+                continue
             else:
                 ValidacionAsignacion = False
                 errortipo= 'Caracter inesperado, se esperaba ";" ' 
@@ -841,7 +855,7 @@ def ConfromacionEntrada():
                 elif CeldasContador == 3:
                     errortipo= 'Caracter inesperado, se esperaba un digito ' 
                 elif CeldasContador == 4:
-                    errortipo= 'Caracter inesperado, esperado, palabra reservada True|False ' 
+                    errortipo= 'Caracter inesperado, esperado, palabra reservada TRUE|FALSE ' 
                 elif CeldasContador == 5:
                     errortipo= 'Caracter inesperado, esperado, palabra patron Color '
                 elif CeldasContador == 6:
@@ -855,22 +869,26 @@ def ConfromacionEntrada():
                 errortemp.append(caracter[2])
                 errortemp.append(caracter[3])
                 Errores.append(errortemp)
-                
-
-
+     
+    #print("///////////////////")
+    #print(ValidacionAsignacion, " Validacion")
+    if ValidacionAsignacion == True :
+        if tituloValidacion == True and anchoValidacion == True and altoValidacion == True and filasValidacion == True and columnaValidacion == True:
+            AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+        else:
+            AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+            errortipo= 'No se ingreso data de una palabra reservada ' 
+            errortemp =[]
+            errortemp.append(" ")
+            errortemp.append(errortipo)
+            errortemp.append(" - ")
+            errortemp.append(" - ")
+            Errores.append(errortemp)
         
-    if ValidacionUltimo == True and ValidacionPermante == True:
-            ValidacionUltimo = False
-            ValidacionOtro = True
-            #print("///////////////////")
-            #print(ValidacionAsignacion, " Validacion")
-            if ValidacionAsignacion == True :
-                AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
-                
-                #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
-                #print("Celdas:", ListaColores)
-                #print("Filtros", ListaFiltrosTemp)
-                #print("///////////////////")
+        #print("Titulo:", Titulo,"Ancho:", Ancho,"Alto:", Alto,"Filas:", Filas,"Columnas:", Columnas)
+        #print("Celdas:", ListaColores)
+        #print("Filtros", ListaFiltrosTemp)
+        #print("///////////////////")
     #print(Errores)
     if LlenaLista == True:
         CrearImagenes()

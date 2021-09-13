@@ -23,7 +23,7 @@ def ReporteTokens():
     
     ReportTokens += "</tbody></table><br>" 
     ReportTokens +="\n"
-    GenerarReportes()
+    GenerarReportesToken()
 
 def ReporteTErrores():
     global ReportErrores
@@ -42,37 +42,43 @@ def ReporteTErrores():
     
     ReportErrores += "</tbody></table><br>" 
     ReportErrores +="\n"
-    GenerarReportes()
+    GenerarReportesErrores()
 
 #Contruye el reporte final  
 def ReportesSolicitadosTokens():
+    
     htmlcompleto = htmlInicial + ReportTokens + htmlFinal
     return htmlcompleto
 
 def ReportesSolicitadosErrores():
+    
     htmlcompleto = htmlInicial + ReportErrores + htmlFinal
     return htmlcompleto
 
 #Genera el Reporte
-def GenerarReportes():
+def GenerarReportesToken():
     try: 
-       
+        
         FileHTML=open("./Reportes/Tokens.HTML","w") 
         FileHTML.write(ReportesSolicitadosTokens()) 
         FileHTML.close() 
 
-        FileHTML=open("./Reportes/Errores.HTML","w") 
-        FileHTML.write(ReportesSolicitadosErrores()) 
-        FileHTML.close()
-
-        #FileCSS=open("./Reportes/css/styles.css","w") 
-        #FileCSS.write(css) 
-        #FileCSS.close() 
     except:
         print("La creación del Reporte falló")
     else:
-         print("Se ha creado el Reporte" )
+         print("Se ha creado el Reporte Token" )
 
+def GenerarReportesErrores():
+    try: 
+        
+
+        FileHTML=open("./Reportes/Errores.HTML","w") 
+        FileHTML.write(ReportesSolicitadosErrores()) 
+        FileHTML.close()
+    except:
+        print("La creación del Reporte falló")
+    else:
+         print("Se ha creado el Reporte Errores" )
 htmlContenido = ""
 
 htmlInicial = """<!DOCTYPE html>

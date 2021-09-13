@@ -90,15 +90,16 @@ class lista_enlazada:
   def VerificarFiltros(self):
     actual= self.primero
     while actual != None:
-      for Filtro in actual.Nodo.Filtros:
+      if actual.Nodo.Filtros != None:
+        for Filtro in actual.Nodo.Filtros:
+          
+          if Filtro.__eq__("MIRRORX"):
+            actual.Nodo.MIRRORX = True
+          elif Filtro.__eq__("MIRRORY"):
+            actual.Nodo.MIRRORY = True
+          elif Filtro.__eq__("DOUBLEMIRROR"):
+            actual.Nodo.DOUBLEMIRROR = True
         
-        if Filtro.__eq__("MIRRORX"):
-          actual.Nodo.MIRRORX = True
-        elif Filtro.__eq__("MIRRORY"):
-          actual.Nodo.MIRRORY = True
-        elif Filtro.__eq__("DOUBLEMIRROR"):
-          actual.Nodo.DOUBLEMIRROR = True
-      
       actual = actual.siguiente
  
   def GeneararFiltroDouble(self):
@@ -425,16 +426,16 @@ def GenerarReportes(Titulo,Contenido,tipo,Actual):
         hti.screenshot(other_file='./HTML_Generados/' +Titulo + "_" +tipo+".HTML",save_as= Titulo + "_" +tipo+'.png')
 
         if tipo.__eq__("ORIGINAL"):
-          print(Actual.Nodo.Titulo,tipo)
+          #print(Actual.Nodo.Titulo,tipo)
           Actual.Nodo.ElementoORIGNINAL = Titulo + "_" +tipo+'.png'
         elif tipo.__eq__("MIRRORX"):
-          print(Actual.Nodo.Titulo,tipo)
+          #print(Actual.Nodo.Titulo,tipo)
           Actual.Nodo.ElementoMIRRORX =  Titulo + "_" +tipo+'.png'
         elif tipo.__eq__("MIRRORY"):
-          print(Actual.Nodo.Titulo,tipo)
+          #print(Actual.Nodo.Titulo,tipo)
           Actual.Nodo.ElementoMIRRORYL =  Titulo + "_" +tipo+'.png'
         elif tipo.__eq__("DOUBLE"):
-          print(Actual.Nodo.Titulo,tipo)
+          #print(Actual.Nodo.Titulo,tipo)
           Actual.Nodo.ElementoDOUBLEMIRROR =  Titulo + "_" +tipo+'.png'
     except:
         print("La creación del Reporte falló")

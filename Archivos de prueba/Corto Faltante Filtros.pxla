@@ -1,0 +1,11 @@
+    TITULO="C";
+    ANCHO=3;
+    ALTO=3;
+    FILAS=3;
+    COLUMNAS=3;
+    CELDAS = {
+             [0,0,FALSE,#FFFFFF]
+
+    };
+    
+

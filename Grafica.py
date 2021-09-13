@@ -5,6 +5,7 @@ from Operaciones import purificacionExtra
 from CrearImagenes import *
 import main
 import Operaciones as Op
+from reportes import *
 Nombre = ""
 
 imgOriginal= './IMG_generada/auxiliar.png'
@@ -12,6 +13,7 @@ imgMirrorx= './IMG_generada/auxiliar.png'
 imgMirrory= './IMG_generada/auxiliar.png'
 imgMirrorDouble= './IMG_generada/auxiliar.png'
 
+opcion = []
 def ventanas():
     try:
         global imgOriginal
@@ -53,8 +55,9 @@ def ventanas():
         def data():
             try: 
                 purificacionExtra()
+                global opcion
                 opcion = Op.lista_e.OptenerNames()
-                combobox(opcion)
+                combobox()
             except Exception:
                 print()
         
@@ -68,18 +71,23 @@ def ventanas():
 
         print(imgOriginal, "IMGORIGINAL")
 
-        imgOriginal = ImageTk.PhotoImage(Image.open(imgOriginal).resize((300, 300)))
-        imgMirroX = ImageTk.PhotoImage(Image.open(imgMirrorx).resize((300, 300)))
-        imgMirroY = ImageTk.PhotoImage(Image.open(imgMirrory).resize((300, 300)))
-        imgMirroDOUBLE = ImageTk.PhotoImage(Image.open(imgMirrorDouble).resize((300, 300)))
+
+       
+
+        imgOriginal = ImageTk.PhotoImage(Image.open(imgOriginal).resize((500, 500)))
+        imgMirroX = ImageTk.PhotoImage(Image.open(imgMirrorx).resize((500, 500)))
+        imgMirroY = ImageTk.PhotoImage(Image.open(imgMirrory).resize((500, 500)))
+        imgMirroDOUBLE = ImageTk.PhotoImage(Image.open(imgMirrorDouble).resize((500, 500)))
         
         lblimg = Label(pes1)
         lblimg['image'] =  imgOriginal
-        lblimg.place(x=400, y =205)
+        lblimg.place(x=300, y =105)
 
         ImagenesCombo = ttk.Combobox(pes1, width = 27,state="readonly")
         ImagenesCombo.pack( padx=0, pady=50)
         ImagenesCombo.current()
+        global opcion
+        ImagenesCombo['values'] = opcion
     
         textLabel = Label(pes1,fg="Gray",font=("Popins",12))
         textLabel['text'] = text
@@ -97,7 +105,8 @@ def ventanas():
         def MirrorDouble():
             lblimg['image'] = imgMirroDOUBLE
 
-        def combobox(opcion):
+        def combobox():
+            global opcion
             ImagenesCombo['values'] = opcion
         Button(pes1,text="Cargar",command= sustituir).place(x=445, y =77)
         Button(pes1,text="Original",command= Original).place(x=80, y =100)
@@ -112,11 +121,11 @@ def ventanas():
 
         notebook.add(pes2,text='Generar Reportes')
     
-        botonEliminar = Button(pes2,text="Salir",command= cerrar).place(x=900, y =0)
+        Button(pes2,text="Salir",command= cerrar).place(x=900, y =0)
         
         Label(pes2,text="Generar Reportes",fg="Gray",font=("Popins",12)).place(x=450, y =150)
 
-        botonEnviar = Button(pes2,text="Generar",command= reportes).place(x=480, y =200)
+        Button(pes2,text="Generar",command= reportes).place(x=480, y =200)
         
         #Terminar ------------------------------------------------------------------------------------
     
@@ -126,6 +135,8 @@ def ventanas():
         print()
 
 def reportes():
+    ReporteTokens()
+    ReporteTErrores()
     print("reportes")
 
 def destruir():
