@@ -4,6 +4,7 @@ from CrearImagenes import *
 
 
 lista_e = lista_enlazada()
+LlenaLista = False
 
 PalabrasReservadas = []
 Tokens = []
@@ -34,6 +35,12 @@ def openExtra():
 
 #Obtiene la cadena de texto
 def purificacionExtra():
+    global LlenaLista
+    #print(LlenaLista, "SFAJKDHAKJASDHJSDKAASJHKJKASD")
+    if LlenaLista == True:
+        Op.lista_e.limpiar()
+        Op.lista_e.recorrer()
+
     global Tokens
     Tokens = []
     global Errores
@@ -449,6 +456,7 @@ def purificacionExtra():
 
     print("///////////////////")
     #print(Tokens)
+    #print(Errores)
     ConfromacionEntrada()
     #print(Tokens[0])
     #print(Tokens[0][1])
@@ -863,9 +871,11 @@ def ConfromacionEntrada():
                 #print("Celdas:", ListaColores)
                 #print("Filtros", ListaFiltrosTemp)
                 #print("///////////////////")
-    CrearImagenes()
-    
     #print(Errores)
+    if LlenaLista == True:
+        CrearImagenes()
+    
+   
     #print("///////////////////")
 
     """print(ValidacionAsignacion, " Validacion")
@@ -879,8 +889,9 @@ def PalabraReservaVerificacion(data):
         return True
 
 def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
-    
+    global LlenaLista
     if Asignar == True:
+        LlenaLista = True
         e1 = ListaImagenes(Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros)
         
         lista_e.insertar(e1)
@@ -894,24 +905,5 @@ def TablaTokens():
     global PalabrasReservadas
     PalabrasReservadas = ["TITULO","ANCHO","ALTO","FILAS","COLUMNAS","CELDAS","FILTROS","MIRRORX","MIRRORY","DOUBLEMIRROR","TRUE","FALSE"]
     #print(PalabrasReservadas)
-    
-"""    
- elif caracter[1].__eq__("MIRRORX"):
-                print(caracter[1])
-                Mirrorx = caracter[1]
-                
-            elif caracter[1].__eq__("MIRRORY"):
-                print(caracter[1])
-                Mirrory = caracter[1]
-                
-            elif caracter[1].__eq__("DOUBLEMIRROR"):
-                print(caracter[1])
-                DoubleMirror = caracter[1]
-                
-            elif caracter[1].__eq__("TRUE"):
-                print(caracter[1])
-                verdadero = caracter[1]
-                
-            elif caracter[1].__eq__("FALSE"):
-                print(caracter[1])
-                falso = caracter[1]"""
+  
+ 

@@ -15,5 +15,5 @@
               [2,2,TRUE,#000000]
       
     };
-    FILTROS = MIRRORX,MIRRORY,DOUBLEMIRROR;
+    FILTROS = MIRRORX,MIRRORY;
 

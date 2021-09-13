@@ -1,67 +1,151 @@
-from tkinter import *
+from tkinter import * 
 from tkinter import ttk
-from Operaciones import purificacionExtra
 from PIL import ImageTk, Image
+from Operaciones import purificacionExtra
+from CrearImagenes import *
+import main
+import Operaciones as Op
+Nombre = ""
 
+imgOriginal= './IMG_generada/auxiliar.png'
+imgMirrorx= './IMG_generada/auxiliar.png'
+imgMirrory= './IMG_generada/auxiliar.png'
+imgMirrorDouble= './IMG_generada/auxiliar.png'
 
-
-
-def ventana():
-    ventana = Tk()
-    ventana.title('Proyecto 1')
-    ventana.geometry("1000x700")
-
-    def sustituir():
-        #ventana.destroy()
-        exit()
+def ventanas():
+    try:
+        global imgOriginal
+        global imgMirrorx
+        global imgMirrory
+        global imgMirrorDouble
         
 
-    notebook = ttk.Notebook(ventana)
-    notebook.pack(fill=BOTH, expand=1)
+        ventana = Tk()
+        ventana.title('Proyecto 1')
+        ventana.geometry("1000x700")
 
-    #Pestana 1 ------------------------------------------------------------------------------------
-    pes0 = ttk.Frame(notebook)
+        def cerrar():
+            exit()
 
-    notebook.add(pes0,text='Cargar')
-  
-    botonEliminar = Button(pes0,text="Salir",command= sustituir).place(x=900, y =0)
+        def sustituir():
+            global Nombre
+            Nombre = ImagenesCombo.get()
+            textLabel['text'] = "Visualizando: " + ImagenesCombo.get()
+            listado =  Op.lista_e.buscar(ImagenesCombo.get())
+
+            definir(listado)
+            ventana.destroy()
+            destruir()
+            #ventanas
+            
+        notebook = ttk.Notebook(ventana)
+        notebook.pack(fill=BOTH, expand=1)
+
+        pes0 = ttk.Frame(notebook)
+        notebook.add(pes0,text='Cargar')
+
+        pes1 = ttk.Frame(notebook)
+        notebook.add(pes1,text='Analizar')
+
+        #Pestana 1 ------------------------------------------------------------------------------------
+        Button(pes0,text="Salir",command= cerrar).place(x=900, y =0)
+
+        def data():
+            try: 
+                purificacionExtra()
+                opcion = Op.lista_e.OptenerNames()
+                combobox(opcion)
+            except Exception:
+                print()
+        
+        Label(pes0,text="Carga de Datos",fg="Gray",font=("Popins",12)).place(x=450, y =150)
+        Button(pes0,text="Cargar",command= data).place(x=480, y =200)
+
+        #Pestana 2 ------------------------------------------------------------------------------------
+        text = "Visualizador"
+        Button(pes1,text="Salir",command= cerrar).place(x=900, y =0)
+        Label(pes1,text="Seleccione una imagen",fg="Gray",font=("Popins",12)).place(x=250, y =25)
+
+        print(imgOriginal, "IMGORIGINAL")
+
+        imgOriginal = ImageTk.PhotoImage(Image.open(imgOriginal).resize((300, 300)))
+        imgMirroX = ImageTk.PhotoImage(Image.open(imgMirrorx).resize((300, 300)))
+        imgMirroY = ImageTk.PhotoImage(Image.open(imgMirrory).resize((300, 300)))
+        imgMirroDOUBLE = ImageTk.PhotoImage(Image.open(imgMirrorDouble).resize((300, 300)))
+        
+        lblimg = Label(pes1)
+        lblimg['image'] =  imgOriginal
+        lblimg.place(x=400, y =205)
+
+        ImagenesCombo = ttk.Combobox(pes1, width = 27,state="readonly")
+        ImagenesCombo.pack( padx=0, pady=50)
+        ImagenesCombo.current()
     
-    Label(pes0,text="Carga de Datos",fg="Gray",font=("Popins",12)).place(x=450, y =150)
-    botonEnviar = Button(pes0,text="Cargar",command= purificacionExtra).place(x=480, y =200)
+        textLabel = Label(pes1,fg="Gray",font=("Popins",12))
+        textLabel['text'] = text
+        textLabel.place(x=10, y =25)
+            
+        def Original():
+            lblimg['image'] = imgOriginal
+            
+        def MirrorX():
+            lblimg['image'] = imgMirroX
 
-    #Pestana 2 ------------------------------------------------------------------------------------
-    pes1 = ttk.Frame(notebook)
-    notebook.add(pes1,text='Analizar')
+        def MirrorY():
+            lblimg['image'] = imgMirroY
 
-    imagen = ImageTk.PhotoImage(Image.open(r'./Imagenes/imagen.jpg').resize((300, 300)))   
-    imagens = ImageTk.PhotoImage(Image.open(r'./Imagenes/IMG.png').resize((300, 300)))
-    Texto = Label(pes1,image=imagen).place(x=500, y =305)
+        def MirrorDouble():
+            lblimg['image'] = imgMirroDOUBLE
 
-    def SayHi():
-        Texto = Label(pes1,image=imagens).place(x=500, y =305)
+        def combobox(opcion):
+            ImagenesCombo['values'] = opcion
+        Button(pes1,text="Cargar",command= sustituir).place(x=445, y =77)
+        Button(pes1,text="Original",command= Original).place(x=80, y =100)
+        Button(pes1,text="MIRRORX",command= MirrorX).place(x=80, y =150)
+        Button(pes1,text="MIRRORY",command= MirrorY).place(x=80, y =200)
+        Button(pes1,text="DOUBLEMIRROR",command= MirrorDouble).place(x=80, y =250)
 
-     
-    botonEliminar = Button(pes1,text="Salir",command= sustituir).place(x=900, y =0)
+        #Pestana 3 ------------------------------------------------------------------------------------
+        
+        
+        pes2 = ttk.Frame(notebook)
 
-    Label(pes1,text="Visualizador",fg="Gray",font=("Popins",12)).place(x=25, y =25)
-    botonOriginal = Button(pes1,text="Original",command= SayHi).place(x=80, y =100)
-    botonFiltroX = Button(pes1,text="MIRRORX",command= SayHi).place(x=80, y =150)
-    botonFiltroY = Button(pes1,text="MIRRORY",command= SayHi).place(x=80, y =200)
-    botonFiltroDouble = Button(pes1,text="DOUBLEMIRROR",command= SayHi).place(x=80, y =250)
-
-    #Pestana 3 ------------------------------------------------------------------------------------
-    pes2 = ttk.Frame(notebook)
-
-    notebook.add(pes2,text='Generar Reportes')
-  
-    botonEliminar = Button(pes2,text="Salir",command= sustituir).place(x=900, y =0)
+        notebook.add(pes2,text='Generar Reportes')
     
-    Label(pes2,text="Generar Reportes",fg="Gray",font=("Popins",12)).place(x=450, y =150)
+        botonEliminar = Button(pes2,text="Salir",command= cerrar).place(x=900, y =0)
+        
+        Label(pes2,text="Generar Reportes",fg="Gray",font=("Popins",12)).place(x=450, y =150)
 
-    botonEnviar = Button(pes2,text="Generar",command= reportes).place(x=480, y =200)
+        botonEnviar = Button(pes2,text="Generar",command= reportes).place(x=480, y =200)
+        
+        #Terminar ------------------------------------------------------------------------------------
     
-    #Terminar ------------------------------------------------------------------------------------
-    ventana.mainloop() 
+        ventana.mainloop() 
+    except Exception:
+       
+        print()
 
 def reportes():
     print("reportes")
+
+def destruir():
+    main.abrir_ventana()
+
+def definir(listado):
+
+    
+    global imgOriginal
+    global imgMirrorx
+    global imgMirrory
+    global imgMirrorDouble
+    print(listado)
+     
+    imgOriginal= listado[0]
+    imgMirrorx=  listado[1]
+    imgMirrory=  listado[2]
+    imgMirrorDouble=  listado[3]
+
+    """ imgOriginal = './IMG_generada/Cubo_ORIGINAL.png'
+    imgMirrorx= './IMG_generada/Cubo_MIRRORX.png'
+    imgMirrory= './IMG_generada/Cubo_MIRRORY.png'
+    imgMirrorx= './IMG_generada/Cubo_DOUBLE.png'"""

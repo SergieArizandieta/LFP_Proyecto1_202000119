@@ -1,24 +1,22 @@
 
 from Operaciones import *
-from Grafica import *
-from prueba import * 
+from reportes import *
+import Grafica 
+
+def abrir_ventana():
+    Grafica.ventanas()
+
 if __name__ == "__main__":
-       
-
-
-    #try:
-        
-        #GenrarImg()
-       
-        reportes()
+    
+    try: 
         TablaTokens()
 
-        #ventana()
+        abrir_ventana()
         
-        purificacionExtra()
+        #purificacionExtra()
+        #ReporteTokens()
+        #ReporteTErrores()
 
-
-    #except Exception:
+    except Exception:
         #print ("\nError vuelva a intentarlo\n", Exception)
-        #print()
-            
+        print()

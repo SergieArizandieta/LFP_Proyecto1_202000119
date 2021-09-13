@@ -1,6 +1,11 @@
 
 import math
 import copy
+from html2image import Html2Image
+hti = Html2Image()
+
+    
+    
 class ListaImagenes:
   def __init__(self,Titulo,Ancho,Alto,Filas,Columnas,CeldasNomrales,Filtros):
     title = Titulo[1:]
@@ -19,6 +24,11 @@ class ListaImagenes:
     self.MIRRORX = False
     self.MIRRORY =False
     self.DOUBLEMIRROR =False
+
+    self.ElementoORIGNINAL = 'auxiliar.png'
+    self.ElementoMIRRORX = 'auxiliar.png'
+    self.ElementoMIRRORYL = 'auxiliar.png'
+    self.ElementoDOUBLEMIRROR = 'auxiliar.png'
 
 
 class nodo:
@@ -46,19 +56,36 @@ class lista_enlazada:
       print("Titulo:", actual.Nodo.Titulo,"Ancho:", actual.Nodo.Ancho,"Alto:", actual.Nodo.Alto,"Filas:", actual.Nodo.Filas,"Columnas:", actual.Nodo.Columnas,"Celdas:", actual.Nodo.Celdas,"Filtros",actual.Nodo.Filtros)
       actual = actual.siguiente
 
+  def OptenerNames(self):
+    lista = []
+    actual= self.primero
+    while actual != None:
+      lista.append(actual.Nodo.Titulo)
+      actual = actual.siguiente
+    return  lista
 
+#--------------------------------------------------------------------------------------------------------------------------------------
   def buscar(self,Titulo):
+    ListasDirecciones = []
+
     actual = self.primero
     anterior = None
-    while actual and actual.Titulo.Titulo != Titulo:
+    while actual and actual.Nodo.Titulo != Titulo:
       anterior = actual
       actual = actual.siguiente
       if actual is None:
         print("\nNo se encontro el Titulo:", Titulo)
         break
     if actual is not None:
-      if actual.Titulo.Titulo == Titulo:
-        print("\Titulo a procesar: ", actual.Titulo.Titulo)
+      if actual.Nodo.Titulo == Titulo:
+        ListasDirecciones.append('./IMG_generada/' + actual.Nodo.ElementoORIGNINAL)
+        ListasDirecciones.append('./IMG_generada/' +actual.Nodo.ElementoMIRRORX)
+        ListasDirecciones.append('./IMG_generada/' +actual.Nodo.ElementoMIRRORYL)
+        ListasDirecciones.append('./IMG_generada/' +actual.Nodo.ElementoDOUBLEMIRROR)
+        
+        print("\Titulo a procesar: ", actual.Nodo.Titulo)
+        return ListasDirecciones
+
 
   def VerificarFiltros(self):
     actual= self.primero
@@ -73,7 +100,6 @@ class lista_enlazada:
           actual.Nodo.DOUBLEMIRROR = True
       
       actual = actual.siguiente
-
  
   def GeneararFiltroDouble(self):
     Temp= []
@@ -125,7 +151,7 @@ class lista_enlazada:
      
       Contenido += '</div>\n</body></html>'
       if actual.Nodo.DOUBLEMIRROR == True:
-        GenerarReportes(actual.Nodo.Titulo,Contenido,"DOUBLE")
+        GenerarReportes(actual.Nodo.Titulo,Contenido,"DOUBLE",actual)
        
       Contenido = htmlInicial
       actual = actual.siguiente
@@ -178,7 +204,7 @@ class lista_enlazada:
       
         Contenido += '</div>\n</body></html>'
         if actual.Nodo.MIRRORY == True:
-          GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORY")
+          GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORY",actual)
         Contenido = htmlInicial
         actual = actual.siguiente
 
@@ -235,7 +261,7 @@ class lista_enlazada:
      
       Contenido += '</div>\n</body></html>'
       if actual.Nodo.MIRRORX == True:
-        GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORX")
+        GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORX",actual)
       Contenido = htmlInicial
      
 
@@ -283,20 +309,138 @@ class lista_enlazada:
       #print(pixeles, "Cantidas")
       Contenido += '</div>\n</body></html>'
      
-      GenerarReportes(actual.Nodo.Titulo,Contenido,"ORIGINAR")
+      GenerarReportes(actual.Nodo.Titulo,Contenido,"ORIGINAL",actual)
+      print("Lectura realizada:",actual.Nodo.Titulo)
       Contenido = htmlInicial
       
       actual = actual.siguiente
 
-def GenerarReportes(Titulo,Contenido,tipo):
+    def limpiar(self):
+      cadena = []
+      actual= self.primero
+      while actual != None:
+        if actual.siguiente is not None:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente
+        else:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente 
+
+      for teerrenoV in cadena:
+        actual = self.primero
+        anterior = None
+
+        while actual and actual.Nodo.Titulo != teerrenoV:
+          anterior = actual
+          actual = actual.siguiente
+        
+        if anterior is None:
+          self.primero = actual.siguiente
+        elif actual:
+          anterior.siguiente = actual.siguiente
+          actual.siguiente = None
+
+    def limpiar(self):
+      cadena = []
+      actual= self.primero
+      while actual != None:
+        if actual.siguiente is not None:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente
+        else:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente 
+
+      for teerrenoV in cadena:
+        actual = self.primero
+        anterior = None
+
+        while actual and actual.Nodo.Titulo != teerrenoV:
+          anterior = actual
+          actual = actual.siguiente
+        
+        if anterior is None:
+          self.primero = actual.siguiente
+        elif actual:
+          anterior.siguiente = actual.siguiente
+          actual.siguiente = None
+
+    def limpiar(self):
+      cadena = []
+      actual= self.primero
+      while actual != None:
+        if actual.siguiente is not None:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente
+        else:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente 
+
+      for teerrenoV in cadena:
+        actual = self.primero
+        anterior = None
+
+        while actual and actual.Nodo.Titulo != teerrenoV:
+          anterior = actual
+          actual = actual.siguiente
+        
+        if anterior is None:
+          self.primero = actual.siguiente
+        elif actual:
+          anterior.siguiente = actual.siguiente
+          actual.siguiente = None
+
+  def limpiar(self):
+      cadena = []
+      actual= self.primero
+      while actual != None:
+        if actual.siguiente is not None:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente
+        else:
+          cadena.append(actual.Nodo.Titulo)
+          actual = actual.siguiente 
+
+      for teerrenoV in cadena:
+        actual = self.primero
+        anterior = None
+
+        while actual and actual.Nodo.Titulo != teerrenoV:
+          anterior = actual
+          actual = actual.siguiente
+        
+        if anterior is None:
+          self.primero = actual.siguiente
+        elif actual:
+          anterior.siguiente = actual.siguiente
+          actual.siguiente = None
+
+def GenerarReportes(Titulo,Contenido,tipo,Actual):
     try: 
         FileHTML=open("./HTML_Generados/" +Titulo + "_" +tipo+".HTML","w") 
         FileHTML.write(Contenido) 
         FileHTML.close() 
+
+        hti = Html2Image(output_path='./IMG_generada')
+        hti.screenshot(other_file='./HTML_Generados/' +Titulo + "_" +tipo+".HTML",save_as= Titulo + "_" +tipo+'.png')
+
+        if tipo.__eq__("ORIGINAL"):
+          print(Actual.Nodo.Titulo,tipo)
+          Actual.Nodo.ElementoORIGNINAL = Titulo + "_" +tipo+'.png'
+        elif tipo.__eq__("MIRRORX"):
+          print(Actual.Nodo.Titulo,tipo)
+          Actual.Nodo.ElementoMIRRORX =  Titulo + "_" +tipo+'.png'
+        elif tipo.__eq__("MIRRORY"):
+          print(Actual.Nodo.Titulo,tipo)
+          Actual.Nodo.ElementoMIRRORYL =  Titulo + "_" +tipo+'.png'
+        elif tipo.__eq__("DOUBLE"):
+          print(Actual.Nodo.Titulo,tipo)
+          Actual.Nodo.ElementoDOUBLEMIRROR =  Titulo + "_" +tipo+'.png'
     except:
         print("La creación del Reporte falló")
-    else:
-        print("Se ha creado el Reporte de",Titulo,"Filtro:",tipo )
+    #else:
+        #print("Se ha creado el Reporte de",Titulo,"Filtro:",tipo )
+
 
 htmlInicial = """  <!DOCTYPE html><html>
 <head><style >
