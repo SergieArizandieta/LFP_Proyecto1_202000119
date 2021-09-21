@@ -1,0 +1,20 @@
+    TITULO="Poke_}bola";
+    ANCHO=300;
+    ALTO=300;
+    FILAS=12;
+    COLUMNAS=12;
+    CELDAS = {
+            [0,0,FALSE,#A00000],
+            [0,1,FALSE,#0B0000],
+            [3,3,FALSE,#00C000],
+            [3,4,TRUE,#00D000],
+            [3,5,TRUE,#0000E0],
+            [3,6,TRUE,#00000F],
+            [3,7,TRUE,#ABCDEF],
+            [4,1,FALSE,#111111],
+            [4,1,FALSE,#00000],
+    };
+    FILTROS = MIRRORX;
+
+    @@A@
+

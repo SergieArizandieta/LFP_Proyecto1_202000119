@@ -1,0 +1,36 @@
+    TITULO="Pokebola";
+    ANCHO=300;
+    ALTO=300;
+    FILAS=12;
+    COLUMNAS=12;
+    CELDAS = {
+            [0,0,FALSE,#000000]
+    };
+    FILTROS = MIRRORX;
+
+    @@@@@ 
+
+    TITULO = " Estrella " ;
+    ANCHO =300 ;
+    ALTO = 300;
+    FILAS=4 ;
+    COLUMNAS =4;
+    CELDAS = {
+            [ 0 , 0 , FALSE , #000000 ] 
+    } ; 
+    FILTROS= MIRRORX   ;
+
+    @ @@@@@ 
+
+TITULO="Pokebola";
+    ANCHO=300;
+    ALTO=300;
+    FILAS=12;
+    COLUMNAS=12;
+    CELDAS = {
+            [1,1,TRUE,#000000]
+    };
+    FILTROS = MIRRORX;
+
+
+ 

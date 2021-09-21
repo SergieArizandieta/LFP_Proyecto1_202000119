@@ -1,0 +1,13 @@
+    TITULO="Pokebola";
+    ANCHO=300;
+    ALTO=300;
+    FILAS=12;
+    COLUMNAS=12;
+    FILTROS = MIRRORX,
+    CELDAS = {
+            [0,0,FALSE,#000000],
+            [1,1,TRUE,#000000],
+            [2,3,FALSE,#000000]
+    };
+    
+

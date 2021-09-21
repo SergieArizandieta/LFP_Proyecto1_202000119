@@ -1,0 +1,17 @@
+    TITULO="Pokebola";
+    ANCHO=300A;
+    ALTO=30;
+    FILAS=C12;
+    COLUMNAS=12D;
+    CELDAS = {
+            [0,0FF,FALSE,#000000],
+            [0,1,FALSE,#000000],
+            [3,3,FALSE,#000000],
+            [3,4,TRUE,#000000],
+            [3,5,TRUE,#000000],
+            [3,6,TRUE,#000000],
+            [3,7,TRUE,#000000],
+            [4,1,FALSE,#000000]
+    };
+    FILTROS = MIRRORX,MIRRORY,DOUBLEMIRROR;
+

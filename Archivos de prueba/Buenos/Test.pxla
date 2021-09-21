@@ -17,15 +17,15 @@
 
     @@@@
 
-    TITULO="Estrella";
-    ANCHO=300;
-    ALTO=300;
-    FILAS=4;
-    COLUMNAS=4;
+    TITULO = " Estrella " ;
+    ANCHO =300 ;
+    ALTO = 300;
+    FILAS=4 ;
+    COLUMNAS =4;
     CELDAS = {
-            [0,0,FALSE,#000000],
-            [1,1,FALSE,#000000],
-            [3,3,FALSE,#000000],
-            [2,1,FALSE,#000000]
-    };
-    FILTROS = MIRRORX,MIRRORY,DOUBLEMIRROR;
+            [ 0 , 0 , FALSE , #000000 ] ,
+            [1,1  ,FALSE  ,#000000  ],
+            [3,3  ,FALSE,  #000000],
+            [2,1,FALSE,#000000  ]
+    } ; 
+    FILTROS= MIRRORX ,MIRRORY, DOUBLEMIRROR  ;
