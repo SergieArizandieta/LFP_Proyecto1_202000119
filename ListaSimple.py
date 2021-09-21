@@ -20,15 +20,19 @@ class ListaImagenes:
     self.Original=None
   
  
+    self.Procesado = False
+    self.ProcesadoX = False
+    self.ProcesadoY = False
+    self.ProcesadoDouble = False
 
     self.MIRRORX = False
     self.MIRRORY =False
     self.DOUBLEMIRROR =False
 
-    self.ElementoORIGNINAL = 'auxiliar.png'
-    self.ElementoMIRRORX = 'auxiliar.png'
-    self.ElementoMIRRORYL = 'auxiliar.png'
-    self.ElementoDOUBLEMIRROR = 'auxiliar.png'
+    self.ElementoORIGNINAL = 'Falta_filtro.png'
+    self.ElementoMIRRORX = 'Falta_filtro.png'
+    self.ElementoMIRRORYL = 'Falta_filtro.png'
+    self.ElementoDOUBLEMIRROR = 'Falta_filtro.png'
 
 
 class nodo:
@@ -104,19 +108,7 @@ class lista_enlazada:
  
   def GeneararFiltroDouble(self):
     Temp= []
-    actual= self.primero
-    enX = int(actual.Nodo.Columnas)-1
-    actual= self.primero
-    enY = int(actual.Nodo.Filas)-1
-
-    while actual != None:
-      Temp =  actual.Nodo.Celdas
-      catindad = len(Temp)
-      for i in range(0, int(catindad)): 
-        Temp[i][0] = enX - int(Temp[i][0]) 
-        Temp[i][1] = enY - int(Temp[i][1]) 
-      actual = actual.siguiente
-
+    
      #Generar HTML---------------------------------------------------------------
       
     Contenido = htmlInicial
@@ -124,59 +116,126 @@ class lista_enlazada:
     encontrado= False
 
     while actual != None:
-      width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
-      width = math.ceil(width)
-      height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
-      height = math.ceil(height)
-      Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
-      Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
-      Contenido += '</style></head><body> \n <div class="canvas">\n'
-      catindad = len(Temp)
-      
-      for y in range(0, int(actual.Nodo.Filas) ):
-        for x in range(0, int(actual.Nodo.Columnas) ):
-            for i in range(0, int(catindad)):
-              if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
-                if Temp[i][2].__eq__("TRUE"):
-                  Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
-                else:
-                  Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
-                encontrado = True
-                break
+      if actual.Nodo.ProcesadoDouble == False and actual.Nodo.DOUBLEMIRROR == True:
+        
+        
+        actual.Nodo.ProcesadoDouble = True
+        enY = int(actual.Nodo.Filas)-1
+        enX = int(actual.Nodo.Columnas)-1
 
-            if encontrado == False:  
-              Contenido+='<div class="pixel" ></div>\n'   
-            else:
-              encontrado = False
-              continue        
-     
-      Contenido += '</div>\n</body></html>'
-      if actual.Nodo.DOUBLEMIRROR == True:
-        GenerarReportes(actual.Nodo.Titulo,Contenido,"DOUBLE",actual)
-       
-      Contenido = htmlInicial
+        Temp =  copy.deepcopy(actual.Nodo.Celdas)
+        catindad = len(Temp)
+        for i in range(0, int(catindad)): 
+          Temp[i][0] = enX - int(Temp[i][0]) 
+          Temp[i][1] = enY - int(Temp[i][1]) 
+
+        width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
+        width = math.ceil(width)
+        height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
+        height = math.ceil(height)
+        Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
+        Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
+        Contenido += '</style></head><body> \n <div class="canvas">\n'
+        catindad = len(Temp)
+        
+        for y in range(0, int(actual.Nodo.Filas) ):
+          for x in range(0, int(actual.Nodo.Columnas) ):
+              for i in range(0, int(catindad)):
+                if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
+                  if Temp[i][2].__eq__("TRUE"):
+                    Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
+                  else:
+                    Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
+                  encontrado = True
+                  break
+
+              if encontrado == False:  
+                Contenido+='<div class="pixel" ></div>\n'   
+              else:
+                encontrado = False
+                continue        
+      
+        Contenido += '</div>\n</body></html>'
+        if actual.Nodo.DOUBLEMIRROR == True:
+          GenerarReportes(actual.Nodo.Titulo,Contenido,"DOUBLE",actual)
+          
+        
+        Contenido = htmlInicial
       actual = actual.siguiente
 
   def GeneararFiltroY(self):
       Temp= []
-      actual= self.primero
-      enY = int(actual.Nodo.Filas)-1
-
-      while actual != None:
-        Temp = copy.deepcopy(actual.Nodo.Celdas)
-        catindad = len(Temp)
-        for i in range(0, int(catindad)): 
-          Temp[i][1] = enY - int(Temp[i][1]) 
-        actual = actual.siguiente
 
       #Generar HTML---------------------------------------------------------------
-        
       Contenido = htmlInicial
       actual= self.primero
       encontrado= False
 
       while actual != None:
+        if actual.Nodo.ProcesadoY == False and actual.Nodo.MIRRORY == True:
+          actual.Nodo.ProcesadoY = True
+          enY = int(actual.Nodo.Filas)-1
+          Temp = copy.deepcopy(actual.Nodo.Celdas)
+          
+          catindad = len(Temp)
+          for i in range(0, int(catindad)): 
+            Temp[i][1] = enY - int(Temp[i][1]) 
+      
 
+
+          width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
+          width = math.ceil(width)
+          height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
+          height = math.ceil(height)
+
+          Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
+          Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
+          Contenido += '</style></head><body> \n <div class="canvas">\n'
+          catindad = len(Temp)
+          
+          for y in range(0, int(actual.Nodo.Filas) ):
+            for x in range(0, int(actual.Nodo.Columnas) ):
+                for i in range(0, int(catindad)):
+                  if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
+                    if Temp[i][2].__eq__("TRUE"):
+                      Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
+                    else:
+                      Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
+                    encontrado = True
+                    break
+                if encontrado == False:  
+                  Contenido+='<div class="pixel" ></div>\n'   
+                else:
+                  encontrado = False
+                  continue        
+        
+          Contenido += '</div>\n</body></html>'
+          if actual.Nodo.MIRRORY == True:
+            GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORY",actual)
+          Contenido = htmlInicial
+        actual = actual.siguiente
+
+  def GeneararFiltroX(self):
+    Temp= []
+ 
+      #Generar HTML---------------------------------------------------------------
+
+    Contenido = htmlInicial
+
+    actual= self.primero
+    
+    encontrado= False
+
+    while actual != None:
+      if actual.Nodo.ProcesadoX == False and actual.Nodo.MIRRORX == True:
+        actual.Nodo.ProcesadoX = True
+        Temp = copy.deepcopy(actual.Nodo.Celdas)
+        enX = int(actual.Nodo.Columnas)-1
+        
+        
+        catindad = len(Temp)
+        for i in range(0, int(catindad)): 
+          Temp[i][0] = enX - int(Temp[i][0]) 
         width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
         width = math.ceil(width)
         height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
@@ -197,6 +256,7 @@ class lista_enlazada:
                     Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
                   encontrado = True
                   break
+
               if encontrado == False:  
                 Contenido+='<div class="pixel" ></div>\n'   
               else:
@@ -204,67 +264,10 @@ class lista_enlazada:
                 continue        
       
         Contenido += '</div>\n</body></html>'
-        if actual.Nodo.MIRRORY == True:
-          GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORY",actual)
+        if actual.Nodo.MIRRORX == True:
+          GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORX",actual)
         Contenido = htmlInicial
-        actual = actual.siguiente
-
-  def GeneararFiltroX(self):
-    Temp= []
-    actual= self.primero
-    
-    enX = int(actual.Nodo.Columnas)-1
-    
-    while actual != None:
-      Temp = copy.deepcopy(actual.Nodo.Celdas)
       
-      
-      catindad = len(Temp)
-      for i in range(0, int(catindad)): 
-        Temp[i][0] = enX - int(Temp[i][0]) 
-      actual = actual.siguiente
-    #Generar HTML---------------------------------------------------------------
-
-    Contenido = htmlInicial
-
-    actual= self.primero
-    
-    encontrado= False
-
-    while actual != None:
-
-      width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
-      width = math.ceil(width)
-      height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
-      height = math.ceil(height)
-
-      Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
-      Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
-      Contenido += '</style></head><body> \n <div class="canvas">\n'
-      catindad = len(Temp)
-      
-      for y in range(0, int(actual.Nodo.Filas) ):
-        for x in range(0, int(actual.Nodo.Columnas) ):
-            for i in range(0, int(catindad)):
-              if int(Temp[i][0]) == x and int(Temp[i][1]) == y:
-                if Temp[i][2].__eq__("TRUE"):
-                  Contenido+='<div class="pixel" style="background-color:' +Temp[i][3] +  ';"></div>\n'
-                else:
-                  Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
-                encontrado = True
-                break
-
-            if encontrado == False:  
-              Contenido+='<div class="pixel" ></div>\n'   
-            else:
-              encontrado = False
-              continue        
-     
-      Contenido += '</div>\n</body></html>'
-      if actual.Nodo.MIRRORX == True:
-        GenerarReportes(actual.Nodo.Titulo,Contenido,"MIRRORX",actual)
-      Contenido = htmlInicial
-     
 
       actual = actual.siguiente
 
@@ -276,45 +279,49 @@ class lista_enlazada:
     encontrado= False
 
     while actual != None:
-      width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
-      width = math.ceil(width)
+      # --------------------------------------------------------------------------------------------------
+      if actual.Nodo.Procesado == False:
+        actual.Nodo.Procesado = True
+        width = float(int(actual.Nodo.Ancho)/ int(actual.Nodo.Columnas))
+        width = math.ceil(width)
 
-      height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
-      height = math.ceil(height)
+        height = float(int(actual.Nodo.Alto)/ int(actual.Nodo.Filas))
+        height = math.ceil(height)
 
-      Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
-      Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
-      Contenido += '</style></head><body> \n <div class="canvas">\n'
-      catindad = len(actual.Nodo.Celdas)
+        Contenido +='.canvas {width:' +  actual.Nodo.Ancho  + 'px;   height:' +  actual.Nodo.Alto + 'px;}\n\n'
+        Contenido += '.pixel{ width:' +  str(width) + 'px; height:' +  str(height) + 'px; float: left; box-shadow: 0px 0px 1px #fff; } \n\n\n'
+        Contenido += '</style></head><body> \n <div class="canvas">\n'
+        catindad = len(actual.Nodo.Celdas)
+        
+        for y in range(0, int(actual.Nodo.Filas) ):
+          for x in range(0, int(actual.Nodo.Columnas) ):
+            
+
+              for i in range(0, int(catindad)):
+                if int(actual.Nodo.Celdas[i][0]) == x and int(actual.Nodo.Celdas[i][1]) == y:
+                  if actual.Nodo.Celdas[i][2].__eq__("TRUE"):
+                    Contenido+='<div class="pixel" style="background-color:' +actual.Nodo.Celdas[i][3] +  ';"></div>\n'
+                  
+                  else:
+                    #print(actual.Nodo.Celdas[i])
+                    Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
+                  encontrado = True
+                  break
+
+              if encontrado == False:  
+                Contenido+='<div class="pixel" ></div>\n'   
+              else:
+                encontrado = False
+                continue        
+        #print(pixeles, "Cantidas")
+        Contenido += '</div>\n</body></html>'
       
-      for y in range(0, int(actual.Nodo.Filas) ):
-        for x in range(0, int(actual.Nodo.Columnas) ):
-          
-
-            for i in range(0, int(catindad)):
-              if int(actual.Nodo.Celdas[i][0]) == x and int(actual.Nodo.Celdas[i][1]) == y:
-                if actual.Nodo.Celdas[i][2].__eq__("TRUE"):
-                  Contenido+='<div class="pixel" style="background-color:' +actual.Nodo.Celdas[i][3] +  ';"></div>\n'
-                
-                else:
-                  #print(actual.Nodo.Celdas[i])
-                  Contenido+='<div class="pixel" style="background-color: transparent;"></div>\n'  
-                encontrado = True
-                break
-
-            if encontrado == False:  
-              Contenido+='<div class="pixel" ></div>\n'   
-            else:
-              encontrado = False
-              continue        
-      #print(pixeles, "Cantidas")
-      Contenido += '</div>\n</body></html>'
-     
-      GenerarReportes(actual.Nodo.Titulo,Contenido,"ORIGINAL",actual)
-      print("Lectura realizada:",actual.Nodo.Titulo)
-      Contenido = htmlInicial
+        GenerarReportes(actual.Nodo.Titulo,Contenido,"ORIGINAL",actual)
+        print("Lectura realizada:",actual.Nodo.Titulo)
+        Contenido = htmlInicial
       
       actual = actual.siguiente
+     # --------------------------------------------------------------------------------------------------
 
     def limpiar(self):
       cadena = []

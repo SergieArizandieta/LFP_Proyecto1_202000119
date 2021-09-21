@@ -1,3 +1,4 @@
+
 from tkinter import * 
 from tkinter import ttk
 from PIL import ImageTk, Image
@@ -8,10 +9,10 @@ import Operaciones as Op
 from reportes import *
 Nombre = ""
 
-imgOriginal= './IMG_generada/auxiliar.png'
-imgMirrorx= './IMG_generada/auxiliar.png'
-imgMirrory= './IMG_generada/auxiliar.png'
-imgMirrorDouble= './IMG_generada/auxiliar.png'
+imgOriginal= './IMG_Programa/auxiliar.png'
+imgMirrorx= './IMG_Programa/auxiliar.png'
+imgMirrory= './IMG_Programa/auxiliar.png'
+imgMirrorDouble= './IMG_Programa/auxiliar.png'
 
 opcion = []
 def ventanas():
@@ -59,7 +60,7 @@ def ventanas():
                 opcion = Op.lista_e.OptenerNames()
                 combobox()
             except Exception:
-                print()
+                print("Error, v")
         
         Label(pes0,text="Carga de Datos",fg="Gray",font=("Popins",12)).place(x=450, y =150)
         Button(pes0,text="Cargar",command= data).place(x=480, y =200)
@@ -132,7 +133,7 @@ def ventanas():
         ventana.mainloop() 
     except Exception:
        
-        print()
+        print("Error, v")
 
 def reportes():
     ReporteTokens()

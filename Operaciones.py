@@ -1,6 +1,7 @@
 from tkinter import filedialog, Tk
 from ListaSimple import *
 from CrearImagenes import *
+import copy
 
 
 lista_e = lista_enlazada()
@@ -10,7 +11,8 @@ PalabrasReservadas = []
 Tokens = []
 Errores = []
 
-
+ListaColores= []
+Last= False
 def openExtra():
     
     
@@ -485,6 +487,9 @@ def isNumero(txt):
         return False
 
 def ConfromacionEntrada(): 
+    global ListaColores
+    ListaColores = []
+
     tituloValidacion = False
     anchoValidacion = False
     altoValidacion = False
@@ -513,7 +518,7 @@ def ConfromacionEntrada():
     ValidacionFinalizacionCeldas = False
     ValidarFiltros = False
 
-    ListaColores= []
+
     
     otroFiltro = False
 
@@ -568,7 +573,9 @@ def ConfromacionEntrada():
             #print(ValidacionAsignacion, " Validacion")
             if ValidacionAsignacion == True :
                 if tituloValidacion == True and anchoValidacion == True and altoValidacion == True and filasValidacion == True and columnaValidacion == True:
-                    AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+                    ListaEnviar  = copy.deepcopy(ListaColores)
+                    AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaEnviar,ListaFiltrosTemp)
+                    
                     tituloValidacion = False
                     anchoValidacion = False
                     altoValidacion = False
@@ -576,7 +583,7 @@ def ConfromacionEntrada():
                     columnaValidacion = False
                 else:
                    
-                    print(tituloValidacion,anchoValidacion,altoValidacion,filasValidacion,columnaValidacion)
+                    #print(tituloValidacion,anchoValidacion,altoValidacion,filasValidacion,columnaValidacion)
                     errortipo= 'No se ingreso data de una palabra reservada ' 
                     errortemp =[]
                     errortemp.append(" ")
@@ -611,7 +618,7 @@ def ConfromacionEntrada():
             ValidacionFinalizacionCeldas = False
             ValidarFiltros = False
 
-            ListaColores= []
+            #ListaColores= []
        
 
         
@@ -873,10 +880,18 @@ def ConfromacionEntrada():
     #print("///////////////////")
     #print(ValidacionAsignacion, " Validacion")
     if ValidacionAsignacion == True :
+        global Last
+        Last = True
         if tituloValidacion == True and anchoValidacion == True and altoValidacion == True and filasValidacion == True and columnaValidacion == True:
-            AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+            ListaSent = copy.deepcopy(ListaColores)
+            AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaSent,ListaFiltrosTemp)
+            
+            
         else:
-            AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaColores,ListaFiltrosTemp)
+            ListaEnviado  = copy.deepcopy(ListaColores)
+            AsignarListado(True,Titulo,Ancho,Alto,Filas,Columnas,ListaEnviado,ListaFiltrosTemp)
+            
+           
             errortipo= 'No se ingreso data de una palabra reservada ' 
             errortemp =[]
             errortemp.append(" ")
@@ -891,7 +906,8 @@ def ConfromacionEntrada():
         #print("///////////////////")
     #print(Errores)
     if LlenaLista == True:
-        CrearImagenes()
+        #rearImagenes()
+        pass
     
    
     #print("///////////////////")
@@ -907,6 +923,9 @@ def PalabraReservaVerificacion(data):
         return True
 
 def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
+    global ListaColores
+    global Last
+    
     global LlenaLista
     if Asignar == True:
         LlenaLista = True
@@ -914,6 +933,10 @@ def AsignarListado(Asignar,Titulo,Ancho,Alto,Filas,Columnas,Celdas,Filtros):
         
         lista_e.insertar(e1)
         
+        CrearImagenes()
+        
+        if Last == False:
+            ListaColores = []
     else:
         pass
 
