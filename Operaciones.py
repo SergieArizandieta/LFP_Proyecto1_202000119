@@ -25,7 +25,7 @@ def openExtra():
             title = "Seleccionar un archivo PXLA",
             initialdir = "./",
             filetypes = (
-                ("archivos LFP", "*.pxla"),
+                ("archivos pxla", "*.pxla"),
                 ("todos los archivos",  "*.*")
             )
         )
