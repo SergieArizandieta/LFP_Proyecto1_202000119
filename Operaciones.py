@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# Este archivo usa el encoding: utf-8
 from tkinter import filedialog, Tk
 from ListaSimple import *
 from CrearImagenes import *
@@ -15,25 +17,30 @@ ListaColores= []
 Last= False
 def openExtra():
     
-    
-    Tk().withdraw()
-    archivo = filedialog.askopenfile(
-        title = "Seleccionar un archivo PXLA",
-        initialdir = "./",
-        filetypes = (
-            ("archivos LFP", "*.pxla"),
-            ("todos los archivos",  "*.*")
+  
+        Tk().withdraw()
+
+        archivo = filedialog.askopenfilename(
+            
+            title = "Seleccionar un archivo PXLA",
+            initialdir = "./",
+            filetypes = (
+                ("archivos LFP", "*.pxla"),
+                ("todos los archivos",  "*.*")
+            )
         )
-    )
-    if archivo is None:
-        print('\nNo se seleccionó ningun archivo')
-        return None
-    else:
-        texto = archivo.read()
-        archivo.close()
-        print('\n"Lectura exitosa"\n')
-        texto += "~"
-        return texto
+        
+        if archivo is None or archivo == "" or archivo == " ":
+            print('\nNo se seleccionó ningun archivo')
+            return None
+        else:
+            print(archivo, "dsa")
+            texto = open(archivo, 'r',encoding="utf8" ).read()
+            
+            print('\n"Lectura exitosa"\n')
+            texto += "~"
+            return texto
+  
 
 #Obtiene la cadena de texto
 def purificacionExtra():

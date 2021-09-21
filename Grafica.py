@@ -60,7 +60,7 @@ def ventanas():
                 opcion = Op.lista_e.OptenerNames()
                 combobox()
             except Exception:
-                print("Error, v")
+                print("Error, No se pudo leer el archivo")
         
         Label(pes0,text="Carga de Datos",fg="Gray",font=("Popins",12)).place(x=450, y =150)
         Button(pes0,text="Cargar",command= data).place(x=480, y =200)
