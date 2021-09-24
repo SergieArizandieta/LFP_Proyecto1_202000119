@@ -56,7 +56,7 @@ def ReportesSolicitadosErrores():
     
     htmlcompleto = htmlInicial + ReportErrores + htmlFinal
     return htmlcompleto
-
+import webbrowser
 #Genera el Reporte
 def GenerarReportesToken():
     try: 
@@ -64,6 +64,8 @@ def GenerarReportesToken():
         FileHTML=open("./Reportes/Tokens.HTML","w") 
         FileHTML.write(ReportesSolicitadosTokens()) 
         FileHTML.close() 
+        webbrowser.open("C:/Users/sergi/3D Objects/GitHub/LFP_Proyecto1_202000119/Reportes")
+      
 
     except:
         print("La creación del Reporte falló")
