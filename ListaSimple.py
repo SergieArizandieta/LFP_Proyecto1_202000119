@@ -87,7 +87,7 @@ class lista_enlazada:
         ListasDirecciones.append('./IMG_generada/' +actual.Nodo.ElementoMIRRORYL)
         ListasDirecciones.append('./IMG_generada/' +actual.Nodo.ElementoDOUBLEMIRROR)
         
-        print("\Titulo a procesar: ", actual.Nodo.Titulo)
+        #print("\Titulo a procesar: ", actual.Nodo.Titulo)
         return ListasDirecciones
 
 

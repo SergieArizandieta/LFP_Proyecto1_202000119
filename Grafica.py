@@ -70,7 +70,7 @@ def ventanas():
         Button(pes1,text="Salir",command= cerrar).place(x=900, y =0)
         Label(pes1,text="Seleccione una imagen",fg="Gray",font=("Popins",12)).place(x=250, y =25)
 
-        print(imgOriginal, "IMGORIGINAL")
+        #print(imgOriginal, "IMGORIGINAL")
 
 
        
@@ -150,8 +150,8 @@ def definir(listado):
     global imgMirrorx
     global imgMirrory
     global imgMirrorDouble
-    print(listado)
-     
+    #print(listado)
+    
     imgOriginal= listado[0]
     imgMirrorx=  listado[1]
     imgMirrory=  listado[2]

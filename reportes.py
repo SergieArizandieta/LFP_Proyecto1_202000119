@@ -14,6 +14,7 @@ def ReporteTokens():
     ReportTokens+='<table class="steelBlueCols"><thead> <tr> <th>no.</th>  <th>Token</th> <th>Lexema</th> <th>Fila</th>  <th>Columna</th> </tr></thead><tbody>\n<tr>'
 
     for Tokens in Operaciones.Tokens:
+        
         num += 1
         ReportTokens += "<td>" + str(num) + "</td>"
         ReportTokens += "<td>" + str(Tokens[0]) + "</td>"
